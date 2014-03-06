@@ -2,4 +2,9 @@
 
 html {
     /* Defaults css for cssmin process */
+    width: 160px;
+}
+
+.copy2bord-container .list-group, .copy2bord-container h5{
+	margin: 0px;
 }
