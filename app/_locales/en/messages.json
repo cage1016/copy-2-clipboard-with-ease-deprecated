@@ -1,0 +1,10 @@
+{
+  "appName": {
+    "message": "copy 2 clipboad with ease",
+    "description": "The name of the application"
+  },
+  "appDescription": {
+    "message": "copy title and url to clipboard with ease",
+    "description": "The description of the application"
+  }
+}
