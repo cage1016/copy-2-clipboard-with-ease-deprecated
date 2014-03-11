@@ -2,7 +2,7 @@
 
 var background_page = chrome.extension.getBackgroundPage();
 
-function optionCtrl($scope, $q, $timeout){
+function optionCtrl($scope){
 
     // load actions and patter from localstorage
     $scope.actions = JSON.parse(localStorage.getItem('actions'));
@@ -49,3 +49,5 @@ function optionCtrl($scope, $q, $timeout){
         $scope.pattern = localStorage.getItem('pattern');
     };
 }
+
+optionCtrl.$inject = ['$scope'];

@@ -1,5 +1,6 @@
 'use strict';
 
+var cb = chrome.browserAction;
 var url = 'https://www.googleapis.com/urlshortener/v1/url';
 var key = 'AIzaSyCWf9RZIACRWqEyfgjE7OY_c0o46D97WfA';
 var timer = null;
@@ -26,7 +27,6 @@ var actions = [{
     small: ' Shortern',
     description: 'copy tab shortern url'
     }];
-
 
 function first_init(){    
     update(pattern);
@@ -106,32 +106,50 @@ function copyToClipboard(tab, actionId, callback){
     
     switch (actionId) {
         case 'copyTitle':
-            if(callback)
-                callback(tab.title)
+            console.log('copy text = ' + tab.title);
+            callback({message:tab.title,status:'ok'});
             break;
         case 'copyTitleUrl':              
             var text = _pattern.name.replace(regexUrl, tab.url).replace(regexTitle, tab.title);
-            if(callback)
-                callback(text);
+            console.log('copy text = ' + text);
+            callback({message:text, status:'ok'});
             break;
         case 'copyTitleUrlShortern':
             shortenUrl(tab.url, tab.incognito, function (response) {
-                if (response.status != 'error') {
-                    var text =  _pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);
-                    if(callback)
-                        callback(text);                   
+                if (response.status != 'err') {
+                    var text =  _pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);                
+                    console.log('copy text = ' + text);
+                    callback({message:text, status:'ok'});
+                }else{
+                    console.log('err = '+response.message);
+                    callback({message:response.message, status:response.status});
                 }
             });
             break;
         case 'copyUrl':
             shortenUrl(tab.url, tab.incognito, function (response) {
-                if (response.status != 'error') {
-                    if(callback)
-                        callback(response.message);
+                if (response.status != 'err') {
+                    console.log('copy text = ' + response.message);
+                    callback({message:response.message, status:'ok'});
+                }else{
+                    console.log('err = '+response.message);
+                    callback({message:response.message, status:response.status});
                 }
             });
             break;
     }
+}
+
+function showCopyMessage(result){
+    if(result.status != 'err')
+        cb.setBadgeBackgroundColor({color:'#3c763d'});
+    else
+        cb.setBadgeBackgroundColor({color:'#ff4c62'});
+    
+    cb.setBadgeText({text:result.status});
+    setTimeout(function() { 
+        cb.setBadgeText({text:''});
+    }, 1000);
 }
 
 function init()
@@ -143,3 +161,12 @@ document.addEventListener('DOMContentLoaded', function ()
 {
 	init();
 });
+
+// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-37047744-3', 'blogpost.com');
+ga('send', 'pageview');

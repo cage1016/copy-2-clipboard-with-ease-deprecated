@@ -1,8 +1,8 @@
 {
-    "name": "__MSG_appName__",
-    "version": "0.0.28",
+    "name": "copy 2 clipboad with ease",
+    "version": "0.0.84",
     "manifest_version": 2,
-    "description": "__MSG_appDescription__",
+    "description": "s simple way to copy tab title and url with ease",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"

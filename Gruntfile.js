@@ -176,17 +176,45 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/images'
                 }]
             }
-        },
-        cssmin: {
-            dist: {
+        },        
+        uncss: {
+              dist: {
+                src: ['app/popup.html', 'app/options.html'],
+                dest: 'dist/styles/tidy.css'
+              },
+            options: {
+                ignore: ['.list-group-item','a','h5','small','h5 small','a.list-group-item','a.list-group-item:hover','a:hover']
+              },
+              test: {
                 files: {
-                    '<%= yeoman.dist %>/styles/main.css': [
-                        '.tmp/styles/{,*/}*.css',
-                        '<%= yeoman.app %>/styles/{,*/}*.css',
-                        '<%= yeoman.app %>/bower_components/bootstrap-css/css/bootstrap.css'
-                    ]
+                  'tests/output.css': ['tests/index.html']
+                },
+                options: {
+                  report: 'gzip'
                 }
             }
+        },        
+//        cssmin: {
+//            dist: {
+//                files: {
+//                    '<%= yeoman.dist %>/styles/main.css': [
+//                        '.tmp/styles/{,*/}*.css',
+//                        '<%= yeoman.app %>/styles/{,*/}*.css'
+//                    ],
+//                    '<%= yeoman.dist %>/styles/tidy.css': [
+//                        '.tmp/bower_components/bootstrap-css-only/css/bootstrap.css',
+//                        '<%= yeoman.app %>/bower_components/bootstrap-css-only/css/bootstrap.css'
+//                    ]
+//                }
+//            }
+//        },
+        cssmin: {
+          dist: {
+            files: {
+              'dist/styles/main.css': 'dist/styles/main.css',
+              'dist/styles/tidy.css': '<%= uncss.dist.dest %>'
+            }             
+          }
         },
         htmlmin: {
             dist: {
@@ -288,11 +316,12 @@ module.exports = function (grunt) {
         'chromeManifest:dist',
         'useminPrepare',
         'concurrent:dist',
-        'cssmin',
         'concat',
         'uglify',
         'copy',
         'usemin',
+        'uncss:dist',
+        'cssmin',
         'compress'
     ]);
 
@@ -300,5 +329,9 @@ module.exports = function (grunt) {
         'jshint',
         'test',
         'build'
+    ]);
+    
+    grunt.registerTask('uncss_', [
+        'uncss:test'
     ]);
 };

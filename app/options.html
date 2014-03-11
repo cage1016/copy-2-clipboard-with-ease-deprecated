@@ -3,11 +3,16 @@
 <html ng-app>
 
 <head>
-    <link href="styles/options.css" rel="stylesheet">
+    <!-- build:css styles/tidy.css -->
     <link href="bower_components/bootstrap-css-only/css/bootstrap.css" rel="stylesheet">
-    
-    <script type="text/javascript" charset="utf-8" src='bower_components/angular/angular.min.js'></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/option.js -->
     <script type="text/javascript" charset="utf-8" src='scripts/option.js'></script>
+    <!-- endbuild -->
+    <!-- build:js scripts/angular.min.js -->
+    <script type="text/javascript" charset="utf-8" src='bower_components/angular/angular.js'></script>
+    <!-- endbuild -->
 </head>
 
 <body ng-controller="optionCtrl">
@@ -16,7 +21,7 @@
             <div class="col-lg-12 col-md-12 col-sm-12">
                 <h1 id="glyphicons" class="page-header">Copy Title Url Pattern</h1>
                 <div class="alert alert-info">
-                    <strong>metion!</strong> You can setup copy title url pattern but keep <strong>title, url</strong> keyword.
+                    <strong>mention!</strong> You can setup copy title url pattern but keep <strong>title, url</strong> keyword.
                 </div>
                 <form class="form-horizontal" role="form">
                     <div class="form-group">
@@ -43,7 +48,6 @@
                         </div>
                     </div>
                 </form>
-
 
             </div>
         </div>
