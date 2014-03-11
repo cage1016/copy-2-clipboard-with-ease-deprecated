@@ -2,7 +2,7 @@
     "name": "__MSG_appName__",
     "version": "0.0.83",
     "manifest_version": 2,
-    "description": "__MSG_appDescription__",
+    "description": "s simple way to copy tab title and url with ease",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"
