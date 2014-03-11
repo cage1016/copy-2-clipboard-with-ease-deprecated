@@ -3,11 +3,16 @@
 <html ng-app>
 
 <head>
-    <link href="styles/options.css" rel="stylesheet">
+    <!-- build:css styles/tidy.css -->
     <link href="bower_components/bootstrap-css-only/css/bootstrap.css" rel="stylesheet">
-    
-    <script type="text/javascript" charset="utf-8" src='bower_components/angular/angular.min.js'></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/option.js -->
     <script type="text/javascript" charset="utf-8" src='scripts/option.js'></script>
+    <!-- endbuild -->
+    <!-- build:js scripts/angular.min.js -->
+    <script type="text/javascript" charset="utf-8" src='bower_components/angular/angular.js'></script>
+    <!-- endbuild -->
 </head>
 
 <body ng-controller="optionCtrl">
@@ -43,7 +48,6 @@
                         </div>
                     </div>
                 </form>
-
 
             </div>
         </div>

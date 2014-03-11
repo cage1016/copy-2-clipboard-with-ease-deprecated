@@ -29,11 +29,15 @@ function addActions(){
             if(e.target.tagName === 'SMALL')
                 id =e.target.parentNode.parentNode.id;
             
-            background_page.copyToClipboard(current_tab, id, function(text){
-                input.value = text;
-                input.select();
-                document.execCommand('copy', false, null);
+            background_page.copyToClipboard(current_tab, id, function(result){
+                if(result.status != 'err'){
+                    input.value = result.message;
+                    input.select();
+                    document.execCommand('copy', false, null);                    
+                }
+                background_page.showCopyMessage(result);
             });
+            
             window.close();
         }, false);
         
@@ -54,12 +58,15 @@ function addActions(){
     action_element.appendChild(frag);
 }
 
+function showCopyMessage(){
+    var myTimer = function(){setTimeout(doStuff, 1000)};
+}
+
 function init()
 {
 	chrome.tabs.getSelected(null, function(tab) 
 	{
 		current_tab = tab;
-		//background_page.shortenUrl(tab.url, tab.incognito, onResponse);
 	});
     
     addActions();
