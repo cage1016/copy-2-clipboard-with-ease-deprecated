@@ -1,16 +1,30 @@
 <!doctype html>
 <html>
-    <head>        
-        <!-- build:js scripts/popup.js -->
-        <script src="scripts/popup.js"></script>
-        <!-- endbuild -->
 
-        <!-- build:css(.tmp) styles/main.css -->
-        <link href="styles/main.css" rel="stylesheet">
-        <link href="bower_components/bootstrap-css/css/bootstrap.css" rel="stylesheet">
-        <!-- endbuild -->
-    </head>
-    <body>
-        <!-- CHROME EXTENSION POPUP -->
-    </body>
+<head>
+    <!-- build:js scripts/popup.js -->
+    <script src="scripts/popup.js"></script>
+    <!-- endbuild -->
+
+    <!-- Stylesheets we want to minify as usual -->
+    <!-- build:css styles/main.css -->
+    <link href="styles/main.css" rel="stylesheet">
+    <!-- endbuild -->
+
+    <!-- Stylesheets we would like cleaned -->
+    <!-- build:css styles/tidy.css -->
+    <!-- just here to make sure we reference styles/tidy.css -->
+    <link href="bower_components/bootstrap-css-only/css/bootstrap.css" rel="stylesheet">
+    <!-- endbuild -->
+</head>
+
+<body>
+    <!-- CHROME EXTENSION POPUP -->
+    <div class="copy2bord-container">
+        <div id="actions" class="list-group">
+        </div>
+    </div>
+    <input type="text" id="url" class="input-url">
+</body>
+
 </html>
