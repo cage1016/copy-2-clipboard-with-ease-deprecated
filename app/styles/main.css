@@ -8,3 +8,8 @@ html {
 .copy2bord-container .list-group, .copy2bord-container h5{
 	margin: 0px;
 }
+
+input.input-url{
+    position: absolute;
+    top: -9999px;
+}

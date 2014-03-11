@@ -1,6 +1,6 @@
 {
     "name": "__MSG_appName__",
-    "version": "0.0.16",
+    "version": "0.0.28",
     "manifest_version": 2,
     "description": "__MSG_appDescription__",
     "icons": {
@@ -8,8 +8,11 @@
         "128": "images/icon-128.png"
     },
     "default_locale": "en",
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js; object-src 'self'",
     "background": {
-        "page": "background.html"
+        "scripts": [
+            "scripts/background.js"
+        ]
     },
     "browser_action": {
         "default_icon": {
@@ -19,6 +22,7 @@
         "default_title": "copy 2 clipboad with ease",
         "default_popup": "popup.html"
     },
+    "options_page": "options.html",
     "permissions": [
         "tabs",
         "http://*/*",

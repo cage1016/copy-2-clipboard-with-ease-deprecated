@@ -2,24 +2,13 @@
 
 var background_page = chrome.extension.getBackgroundPage();
 var current_tab;
+var input;
 
 function addActions(){
+    input = document.getElementById('url');
     
-    var actions = [{
-       id: 'copyTitle',
-       name:'Title'
-    }, {
-       id: 'copyTitleUrl',
-       name: 'Title (URL)'
-    }, {
-       id: 'copyTitleUrlShortern',
-       name: 'Title (URL)',
-       small: ' Shortern'
-    },{
-        id:'copyUrl',
-        name: '(URL)',
-        small: ' Shortern'
-    }];
+    // load action itme from localstorage
+    var actions = JSON.parse(localStorage.getItem('actions'));
     
     var action_element = document.getElementById('actions');
     var frag = document.createDocumentFragment();
@@ -40,7 +29,11 @@ function addActions(){
             if(e.target.tagName === 'SMALL')
                 id =e.target.parentNode.parentNode.id;
             
-            background_page.copyToClipboard(current_tab, id);
+            background_page.copyToClipboard(current_tab, id, function(text){
+                input.value = text;
+                input.select();
+                document.execCommand('copy', false, null);
+            });
             window.close();
         }, false);
         

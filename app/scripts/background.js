@@ -5,8 +5,51 @@ var key = 'AIzaSyCWf9RZIACRWqEyfgjE7OY_c0o46D97WfA';
 var timer = null;
 var milliseconds = 10000;
 
+// initial value
+var pattern = 'url (title)';
+var actions = [{
+    id: 'copyTitle',
+    name: 'title',
+    description: 'copy tab title'
+    }, {
+    id: 'copyTitleUrl',
+    name: 'url (title)',
+    description: 'copy tab title with url'
+    }, {
+    id: 'copyTitleUrlShortern',
+    name: 'url (title)',
+    small: ' Shortern',
+    description: 'copy tab title with shortern url'
+    }, {
+    id: 'copyUrl',
+    name: 'url',
+    small: ' Shortern',
+    description: 'copy tab shortern url'
+    }];
+
+
+function first_init(){    
+    update(pattern);
+}
+
+function update(_pattern){
+    localStorage.setItem('pattern', _pattern);
+    for(var i in actions){
+        var action = actions[i];
+        if(action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShortern')
+            action.name = _pattern;
+    }
+    localStorage.setItem('actions', JSON.stringify(actions));
+}
+
+function resetDefault(){
+    first_init();
+}
+
 chrome.runtime.onInstalled.addListener(function (details) {
-    console.log('previousVersion', details.previousVersion);
+    console.log('previousVersion', details.previousVersion);    
+    console.log('first data initialize');
+    first_init();
 });
 
 function shortenUrl(longUrl, incognito, callback)
@@ -47,46 +90,48 @@ function shortenUrl(longUrl, incognito, callback)
 	, milliseconds);
 }
 
-function copyToClipboard(tab, actionId){    
+var regexTitle=/title/gi;
+var regexUrl=/url/gi;    
+function copyToClipboard(tab, actionId, callback){ 
+    
+    var _pattern = (function(id){
+        var r;
+        for(var i in JSON.parse(localStorage.getItem('actions'))){
+            var action = actions[i];
+            if(action.id === actionId)
+                r = action;
+        }
+        return r;
+    })(actionId);
+    
     switch (actionId) {
         case 'copyTitle':
-            copy(tab.title);
+            if(callback)
+                callback(tab.title)
             break;
-        case 'copyTitleUrl':
-            var text = (tab.url + ' (' + tab.title + ')');
-            copy(text);
+        case 'copyTitleUrl':              
+            var text = _pattern.name.replace(regexUrl, tab.url).replace(regexTitle, tab.title);
+            if(callback)
+                callback(text);
             break;
         case 'copyTitleUrlShortern':
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'error') {
-                    var text = (response.message + ' (' + tab.title + ')');
-                    copy(text);
+                    var text =  _pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);
+                    if(callback)
+                        callback(text);                   
                 }
             });
             break;
         case 'copyUrl':
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'error') {
-                    copy(response.message);
+                    if(callback)
+                        callback(response.message);
                 }
             });
             break;
     }
-}
-
-function copy(text)
-{
-	var input = document.getElementById('url');
-	
-	if(input == undefined)
-		return;
-	
-	input.value = text;					
-	input.select();
-
-    console.log('copy = ' +text);
-    
-	document.execCommand('copy', false, null);
 }
 
 function init()
