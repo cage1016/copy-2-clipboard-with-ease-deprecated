@@ -28,12 +28,12 @@ var actions = [{
     id: 'copyTitleUrlShorten',
     name: 'url (title)',
     small: ' Shorten',
-    description: 'copy tab title with shortern url'
+    description: 'copy tab title with Shorten url'
     }, {
     id: 'copyUrl',
     name: 'url',
     small: ' Shorten',
-    description: 'copy tab shortern url'
+    description: 'copy tab Shorten url'
     }];
 
 function first_init(){    
@@ -44,7 +44,7 @@ function update(_pattern){
     localStorage.setItem('pattern', _pattern);
     for(var i in actions){
         var action = actions[i];
-        if(action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShortern')
+        if(action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShorten')
             action.name = _pattern;
     }
     localStorage.setItem('actions', JSON.stringify(actions));
@@ -119,22 +119,22 @@ function copyToClipboard(tab, actionId, callback){
     switch (actionId) {
         case 'copyTitle':
             console.log('copy text = ' + tab.title);
-            callback({message:tab.title,status:'ok'});
+            showCopyMessage({message:tab.title,status:'ok'});
             break;
         case 'copyTitleUrl':              
             var text = _pattern.name.replace(regexUrl, tab.url).replace(regexTitle, tab.title);
             console.log('copy text = ' + text);
-            callback({message:text, status:'ok'});
+            showCopyMessage({message:text, status:'ok'});
             break;
-        case 'copyTitleUrlShortern':            
+        case 'copyTitleUrlShorten':              
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'err') {
                     var text =  _pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);                
                     console.log('copy text = ' + text);
-                    callback({message:text, status:'ok'});
+                    showCopyMessage({message:text, status:'ok'});
                 }else{
                     console.log('err = '+response.message);
-                    callback({message:response.message, status:response.status});
+                    showCopyMessage({message:response.message, status:response.status});
                 }
             });
             break;
@@ -142,26 +142,40 @@ function copyToClipboard(tab, actionId, callback){
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'err') {
                     console.log('copy text = ' + response.message);
-                    callback({message:response.message, status:'ok'});
+                    showCopyMessage({message:response.message, status:'ok'});
                 }else{
                     console.log('err = '+response.message);
-                    callback({message:response.message, status:response.status});
+                    showCopyMessage({message:response.message, status:response.status});
                 }
             });
             break;
     }
 }
 
-function showCopyMessage(result){
+function copy(text){
+    var copyDiv = document.createElement('div');
+    copyDiv.contentEditable = true;
+    document.body.appendChild(copyDiv);
+    copyDiv.innerHTML = text;
+    copyDiv.unselectable = "off";
+    copyDiv.focus();
+    document.execCommand('SelectAll');
+    document.execCommand("Copy", false, null);
+    document.body.removeChild(copyDiv);        
+}
+
+function showCopyMessage(result){            
     if(result.status == 'err')
         cb.setBadgeBackgroundColor(statusColor.err);
-    else
+    else{
         cb.setBadgeBackgroundColor(statusColor.ok);
+        copy(result.message);
+    }
     
     cb.setBadgeText({text:result.status});
     setTimeout(function() { 
         cb.setBadgeText({text:''});
-    }, 1000);
+    }, 500);
 }
 
 function init()
