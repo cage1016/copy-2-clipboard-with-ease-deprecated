@@ -1,6 +1,6 @@
 {
-    "name": "copy 2 clipboad with ease",
-    "version": "0.0.84",
+    "name": "copy 2 clipboard with ease",
+    "version": "0.0.102",
     "manifest_version": 2,
     "description": "s simple way to copy tab title and url with ease",
     "icons": {
@@ -8,7 +8,7 @@
         "128": "images/icon-128.png"
     },
     "default_locale": "en",
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js; object-src 'self'",
+    "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
     "background": {
         "scripts": [
             "scripts/background.js"
@@ -19,7 +19,7 @@
             "19": "images/icon-19.png",
             "38": "images/icon-38.png"
         },
-        "default_title": "copy 2 clipboad with ease",
+        "default_title": "copy 2 clipboard with ease",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",

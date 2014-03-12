@@ -2,11 +2,8 @@
 
 var background_page = chrome.extension.getBackgroundPage();
 var current_tab;
-var input;
 
 function addActions(){
-    input = document.getElementById('url');
-    
     // load action itme from localstorage
     var actions = JSON.parse(localStorage.getItem('actions'));
     
@@ -29,16 +26,8 @@ function addActions(){
             if(e.target.tagName === 'SMALL')
                 id =e.target.parentNode.parentNode.id;
             
-            background_page.copyToClipboard(current_tab, id, function(result){
-                if(result.status != 'err'){
-                    input.value = result.message;
-                    input.select();
-                    document.execCommand('copy', false, null);                    
-                }
-                background_page.showCopyMessage(result);
-            });
-            
-            window.close();
+            background_page.copyToClipboard(current_tab, id);
+            window.close();    
         }, false);
         
         var h5 = document.createElement('h5');
@@ -56,10 +45,6 @@ function addActions(){
     }
     
     action_element.appendChild(frag);
-}
-
-function showCopyMessage(){
-    var myTimer = function(){setTimeout(doStuff, 1000)};
 }
 
 function init()
