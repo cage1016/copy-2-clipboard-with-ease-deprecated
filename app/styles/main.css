@@ -1,6 +1,6 @@
 /* Will be compiled down to a single stylesheet with your sass files */
 
-html {
+#popup {
     /* Defaults css for cssmin process */
     width: 160px;
 }

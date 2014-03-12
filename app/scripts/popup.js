@@ -36,9 +36,9 @@ function addActions(){
                     document.execCommand('copy', false, null);                    
                 }
                 background_page.showCopyMessage(result);
-            });
-            
-            window.close();
+               
+                window.close();    
+            });            
         }, false);
         
         var h5 = document.createElement('h5');

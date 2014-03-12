@@ -183,7 +183,7 @@ module.exports = function (grunt) {
                 dest: 'dist/styles/tidy.css'
               },
             options: {
-                ignore: ['.list-group-item','a','h5','small','h5 small','a.list-group-item','a.list-group-item:hover','a:hover']
+                ignore: ['.list-group-item','a','h5','small','h5 small','a.list-group-item','a.list-group-item:hover','a:hover','.text-success']
               },
               test: {
                 files: {

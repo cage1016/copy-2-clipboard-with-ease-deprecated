@@ -25,14 +25,14 @@ var actions = [{
     name: 'url (title)',
     description: 'copy tab title with url'
     }, {
-    id: 'copyTitleUrlShortern',
+    id: 'copyTitleUrlShorten',
     name: 'url (title)',
-    small: ' Shortern',
+    small: ' Shorten',
     description: 'copy tab title with shortern url'
     }, {
     id: 'copyUrl',
     name: 'url',
-    small: ' Shortern',
+    small: ' Shorten',
     description: 'copy tab shortern url'
     }];
 
