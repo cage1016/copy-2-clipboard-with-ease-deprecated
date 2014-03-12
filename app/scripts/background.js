@@ -5,6 +5,14 @@ var url = 'https://www.googleapis.com/urlshortener/v1/url';
 var key = 'AIzaSyCWf9RZIACRWqEyfgjE7OY_c0o46D97WfA';
 var timer = null;
 var milliseconds = 10000;
+var statusColor = {
+    err: {
+        color: '#ff4c62'
+    },
+    ok: {
+        color: '#3c763d'
+    }
+};
 
 // initial value
 var pattern = 'url (title)';
@@ -71,7 +79,7 @@ function shortenUrl(longUrl, incognito, callback)
 				if(response.error.code == '401')
 					oauth.clearTokens();
 					
-				callback({status: 'error', message: response.error.message});
+				callback({status: 'err', message: response.error.message});
 			}
 			else	
 			{
@@ -104,6 +112,10 @@ function copyToClipboard(tab, actionId, callback){
         return r;
     })(actionId);
     
+    // show badge text, color
+    cb.setBadgeText({text:'...'});
+    cb.setBadgeBackgroundColor(statusColor.ok);
+        
     switch (actionId) {
         case 'copyTitle':
             console.log('copy text = ' + tab.title);
@@ -114,7 +126,7 @@ function copyToClipboard(tab, actionId, callback){
             console.log('copy text = ' + text);
             callback({message:text, status:'ok'});
             break;
-        case 'copyTitleUrlShortern':
+        case 'copyTitleUrlShortern':            
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'err') {
                     var text =  _pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);                
@@ -141,10 +153,10 @@ function copyToClipboard(tab, actionId, callback){
 }
 
 function showCopyMessage(result){
-    if(result.status != 'err')
-        cb.setBadgeBackgroundColor({color:'#3c763d'});
+    if(result.status == 'err')
+        cb.setBadgeBackgroundColor(statusColor.err);
     else
-        cb.setBadgeBackgroundColor({color:'#ff4c62'});
+        cb.setBadgeBackgroundColor(statusColor.ok);
     
     cb.setBadgeText({text:result.status});
     setTimeout(function() { 

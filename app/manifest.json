@@ -8,7 +8,7 @@
         "128": "images/icon-128.png"
     },
     "default_locale": "en",
-    "content_security_policy": "script-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js; object-src 'self'",
+    "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",   
     "background": {
         "scripts": [
             "scripts/background.js"
