@@ -25,13 +25,16 @@ function optionCtrl($scope){
                     r = r.replace(regexTitle, $scope.title);
                     return r;                
                     break;
-                case 'copyTitleUrlShortern':
+                case 'copyTitleUrlShorten':
                      var r = $scope.pattern.replace(regexUrl, $scope.shoternUrl);
                     r = r.replace(regexTitle, $scope.title);
                     return r;    
                     break;
+                case 'copyUrlShorten':
+                    return $scope.shoternUrl;
+                    break;
                 case 'copyUrl':
-                    return $scope.shoternUrl
+                    return $scope.url;
                     break;
             }    
     };

@@ -201,9 +201,28 @@ function showCopyMessage(result){
     }, 500);
 }
 
+
+function createContextMenu() { 
+    chrome.contextMenus.removeAll();
+    var dActions = JSON.parse(localStorage.getItem('actions'));
+    
+    for (var i in dActions) {
+        var action = actions[i];    
+        (function (action) {
+            chrome.contextMenus.create({
+                'title': action.description,
+                'contexts': ['page', 'link', 'selection', 'image'],
+                'onclick': function (info, tab) {
+                    copyToClipboard(tab, action.id);
+                }
+            });
+        })(action);
+    } 
+}
+
 function init()
 {
-	//createContextMenu();
+	createContextMenu();
 }
 
 document.addEventListener('DOMContentLoaded', function () 
