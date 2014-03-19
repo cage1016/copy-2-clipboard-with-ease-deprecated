@@ -30,14 +30,19 @@ var actions = [{
     small: ' Shorten',
     description: 'copy tab title with Shorten url'
     }, {
-    id: 'copyUrl',
+    id: 'copyUrlShorten',
     name: 'url',
     small: ' Shorten',
     description: 'copy tab Shorten url'
+    },{
+    id: 'copyUrl',
+    name: 'url',
+    description: 'copy tab url'
     }];
 
 function first_init(){    
-    update(pattern);
+    var old_pattern = localStorage.getItem('pattern');
+    update(old_pattern || pattern);              
 }
 
 function update(_pattern){
@@ -55,9 +60,23 @@ function resetDefault(){
 }
 
 chrome.runtime.onInstalled.addListener(function (details) {
-    console.log('previousVersion', details.previousVersion);    
+    console.log('previousVersion', details.previousVersion);   
     console.log('first data initialize');
-    first_init();
+    
+    if(!localStorage.getItem('version'))
+    {
+        console.log('version does not exist');
+        first_init();
+    }else{
+        if(localStorage.version > details.previousVersion)
+        {
+            // update
+            console.log('version update, data migration.');
+            first_init();
+        }
+    }
+    
+    localStorage.setItem('version', details.previousVersion); 
 });
 
 function shortenUrl(longUrl, incognito, callback)
@@ -138,7 +157,7 @@ function copyToClipboard(tab, actionId, callback){
                 }
             });
             break;
-        case 'copyUrl':
+        case 'copyUrlShorten':
             shortenUrl(tab.url, tab.incognito, function (response) {
                 if (response.status != 'err') {
                     console.log('copy text = ' + response.message);
@@ -148,6 +167,10 @@ function copyToClipboard(tab, actionId, callback){
                     showCopyMessage({message:response.message, status:response.status});
                 }
             });
+            break;
+        case 'copyUrl':
+            console.log('copy text = ' + tab.url);
+            showCopyMessage({message:tab.url, status:'ok'});
             break;
     }
 }
