@@ -28,5 +28,15 @@
         "contextMenus",
         "http://*/*",
         "https://*/*"
-    ]
+    ],
+    "commands": {
+        "trigger-fast-copy": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+U",
+                "mac": "Command+Shift+U"
+            },
+            "description": "Toggle feature foo",
+            "global": true
+        }
+    }
 }
