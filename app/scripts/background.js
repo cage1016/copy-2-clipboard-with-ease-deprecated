@@ -67,22 +67,25 @@ function resetDefault() {
 }
 
 chrome.runtime.onInstalled.addListener(function(details) {
-    console.log('previousVersion', details.previousVersion);
-    console.log('first data initialize');
+    // remove unnecessary property
+    delete localStorage.version;
 
-    if (!localStorage.getItem('version')) {
-        console.log('version does not exist');
-        firstInit();
-    } else {
-        if (localStorage.version > details.previousVersion) {
-            // update
-            console.log('version update, data migration.');
-            localStorage.setItem('shortcut', JSON.stringify(shortcut));
-            firstInit();
-        }
+    if (details.reason === 'install') {
+        console.log('first data initialize');
+
+        // 1. pattern
+        console.log('setup pattern');
+        update(pattern);
+        // 2. shortcut
+        console.log('setup shortcut');
+        localStorage.setItem('shortcut', JSON.stringify(shortcut));
+    }
+    if (details.reason === 'update') {
+        console.log('update new data initialize');
+        console.log('update shortcut');
+        localStorage.setItem('shortcut', JSON.stringify(shortcut));
     }
 
-    localStorage.setItem('version', details.previousVersion);
 });
 
 function shortenUrl(longUrl, incognito, callback) {
