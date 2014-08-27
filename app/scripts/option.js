@@ -52,6 +52,34 @@ function optionCtrl($scope) {
         $scope.actions = JSON.parse(localStorage.getItem('actions'));
         $scope.pattern = localStorage.getItem('pattern');
     };
+
+    /* shortcut */
+    chrome.commands.getAll(function(commands) {
+        angular.forEach(commands, function(command) {
+            if (command.name === 'trigger-fast-copy') {
+                $scope.commandShortcut = command.shortcut;
+                $scope.$apply();
+            }
+        });
+    });
+
+    $scope.shortcut = JSON.parse(localStorage.getItem('shortcut'));
+
+    $scope.$watch('shortcut', function(n, o) {
+        if (n === o) {
+            return;
+        }
+        localStorage.setItem('shortcut', JSON.stringify(n));
+    }, true);
+
+
+    $scope.open = function() {
+        chrome.tabs.create({
+            url: 'chrome://extensions/'
+        }, function() {
+
+        });
+    };
 }
 
 optionCtrl.$inject = ['$scope'];

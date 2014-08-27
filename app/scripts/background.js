@@ -18,6 +18,10 @@ var statusColor = {
 
 // initial value
 var pattern = 'url (title)';
+var shortcut = {
+    enabled: true,
+    id: 'copyTitleUrlShorten'
+};
 var actions = [{
     id: 'copyTitle',
     name: 'title',
@@ -63,21 +67,25 @@ function resetDefault() {
 }
 
 chrome.runtime.onInstalled.addListener(function(details) {
-    console.log('previousVersion', details.previousVersion);
-    console.log('first data initialize');
+    // remove unnecessary property
+    delete localStorage.version;
 
-    if (!localStorage.getItem('version')) {
-        console.log('version does not exist');
-        firstInit();
-    } else {
-        if (localStorage.version > details.previousVersion) {
-            // update
-            console.log('version update, data migration.');
-            firstInit();
-        }
+    if (details.reason === 'install') {
+        console.log('first data initialize');
+
+        // 1. pattern
+        console.log('setup pattern');
+        update(pattern);
+        // 2. shortcut
+        console.log('setup shortcut');
+        localStorage.setItem('shortcut', JSON.stringify(shortcut));
+    }
+    if (details.reason === 'update') {
+        console.log('update new data initialize');
+        console.log('update shortcut');
+        localStorage.setItem('shortcut', JSON.stringify(shortcut));
     }
 
-    localStorage.setItem('version', details.previousVersion);
 });
 
 function shortenUrl(longUrl, incognito, callback) {
@@ -236,8 +244,6 @@ function copyToClipboard(tab, actionId) {
     }
 }
 
-
-
 function buildContextMenu(action) {
     (function(_action) {
         chrome.contextMenus.create({
@@ -249,7 +255,6 @@ function buildContextMenu(action) {
         });
     })(action);
 }
-
 
 function createContextMenu() {
     chrome.contextMenus.removeAll();
@@ -287,3 +292,16 @@ ga('send', 'pageview');
 
 // Code here will be linted with ignored by JSHint.
 /* jshint ignore:end */
+
+chrome.commands.onCommand.addListener(function(command) {
+    console.log('Command:', command);
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function(tabs) {
+        var shortcut = JSON.parse(localStorage.getItem('shortcut'));
+        if (shortcut.enabled) {
+            copyToClipboard(tabs[0], shortcut.id);
+        }
+    });
+});

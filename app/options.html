@@ -1,6 +1,9 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app ng-csp>
     <head>
+        <!-- build:css(.tmp) styles/main.css -->
+        <link href="styles/main.css" rel="stylesheet">
+        <!-- endbuild -->
         <!-- build:css({.tmp,app}) styles/vendor.css -->
         <!-- bower:css -->
         <link rel="stylesheet" href="bower_components/bootstrap-css-only/css/bootstrap.css" />
@@ -10,7 +13,7 @@
     <body ng-controller="optionCtrl">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="col-lg-12 col-md-12 col-sm-12 section-wrapper">
                     <h1 id="glyphicons" class="page-header">Copy Title Url Pattern</h1>
                     <div class="alert alert-info">
                         <strong>mention!</strong> You can setup copy title url pattern but keep <strong>title, url</strong> keyword.
@@ -37,6 +40,38 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="button" ng-click="resetDefault()" class="btn btn-danger">Reset Default</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-12 col-md-12 col-sm-12 section-wrapper">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label for="inputPattern" class="col-sm-2 control-label ">Keyboard Shortcut</label>
+                            <div class="col-sm-10">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="shortcut.enabled"> Enabled
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <input type="text" class="form-control" placeholder="shortcut" ng-model="commandShortcut" ng-readonly="true">
+                                <p class="help-block">
+                                You can modify shortcut in <a href="#" ng-click="open()">Keyboard shortcuts</a> in the bottom of Chrome extension. extension default shortcut is <code>Alt+Shift+C</code>. It will be empty if you have been setup it up with other feature.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <div class="radio" ng-repeat="action in actions">
+                                    <label>
+                                        <input type="radio" ng-value="action.id" ng-model="shortcut.id" ng-disabled="!shortcut.enabled">
+                                        {{action.description}}
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </form>
