@@ -1,53 +1,54 @@
 'use strict';
 
-var background_page = chrome.extension.getBackgroundPage();
+var bg = chrome.extension.getBackgroundPage();
 
-function optionCtrl($scope){
+function optionCtrl($scope) {
 
     // load actions and patter from localstorage
     $scope.actions = JSON.parse(localStorage.getItem('actions'));
     $scope.pattern = localStorage.getItem('pattern');
-    
+
     $scope.url = 'https://www.google.com';
     $scope.shoternUrl = 'http://goo.gl/Njku';
     $scope.title = 'Google';
-    
-    $scope.preview = function(action){
-        var regexTitle=/title/gi;
-        var regexUrl=/url/gi;
-        
+
+    $scope.preview = function(action) {
+        var regexTitle = /title/gi;
+        var regexUrl = /url/gi;
+        var result = null;
+
         switch (action.id) {
-                case 'copyTitle':
-                    return $scope.title
-                    break;
-                case 'copyTitleUrl':
-                    var r = $scope.pattern.replace(regexUrl, $scope.url);
-                    r = r.replace(regexTitle, $scope.title);
-                    return r;                
-                    break;
-                case 'copyTitleUrlShorten':
-                     var r = $scope.pattern.replace(regexUrl, $scope.shoternUrl);
-                    r = r.replace(regexTitle, $scope.title);
-                    return r;    
-                    break;
-                case 'copyUrlShorten':
-                    return $scope.shoternUrl;
-                    break;
-                case 'copyUrl':
-                    return $scope.url;
-                    break;
-            }    
+            case 'copyTitle':
+                result = $scope.title;
+                break;
+            case 'copyTitleUrl':
+                result = $scope.pattern.replace(regexUrl, $scope.url).replace(regexTitle, $scope.title);
+                break;
+            case 'copyTitleUrlShorten':
+                result = $scope.pattern.replace(regexUrl, $scope.shoternUrl).replace(regexTitle, $scope.title);
+                break;
+            case 'copyUrlShorten':
+                result = $scope.shoternUrl;
+                break;
+            case 'copyUrl':
+                result = $scope.url;
+                break;
+        }
+
+        return result;
     };
-    
-    $scope.$watch('pattern', function(n,o){
-        if(n===o)return;
-        background_page.update(n);
+
+    $scope.$watch('pattern', function(n, o) {
+        if (n === o) {
+            return;
+        }
+        bg.update(n);
     });
 
-    $scope.resetDefault = function(){
-        background_page.resetDefault();
-        
-         //re-load actions and patter from localstorage
+    $scope.resetDefault = function() {
+        bg.resetDefault();
+
+        //re-load actions and patter from localstorage
         $scope.actions = JSON.parse(localStorage.getItem('actions'));
         $scope.pattern = localStorage.getItem('pattern');
     };
