@@ -18,6 +18,10 @@ var statusColor = {
 
 // initial value
 var pattern = 'url (title)';
+var shortcut = {
+    enabled: true,
+    id: 'copyTitleUrlShorten'
+};
 var actions = [{
     id: 'copyTitle',
     name: 'title',
@@ -73,6 +77,7 @@ chrome.runtime.onInstalled.addListener(function(details) {
         if (localStorage.version > details.previousVersion) {
             // update
             console.log('version update, data migration.');
+            localStorage.setItem('shortcut', JSON.stringify(shortcut));
             firstInit();
         }
     }
@@ -236,8 +241,6 @@ function copyToClipboard(tab, actionId) {
     }
 }
 
-
-
 function buildContextMenu(action) {
     (function(_action) {
         chrome.contextMenus.create({
@@ -249,7 +252,6 @@ function buildContextMenu(action) {
         });
     })(action);
 }
-
 
 function createContextMenu() {
     chrome.contextMenus.removeAll();
@@ -287,3 +289,16 @@ ga('send', 'pageview');
 
 // Code here will be linted with ignored by JSHint.
 /* jshint ignore:end */
+
+chrome.commands.onCommand.addListener(function(command) {
+    console.log('Command:', command);
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function(tabs) {
+        var shortcut = JSON.parse(localStorage.getItem('shortcut'));
+        if (shortcut.enabled) {
+            copyToClipboard(tabs[0], shortcut.id);
+        }
+    });
+});
