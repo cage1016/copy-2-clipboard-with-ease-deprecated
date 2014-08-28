@@ -244,25 +244,44 @@ function copyToClipboard(tab, actionId) {
     }
 }
 
-function buildContextMenu(action) {
-    (function(_action) {
-        chrome.contextMenus.create({
-            'title': action.description,
-            'contexts': ['page', 'link', 'selection', 'image'],
-            'onclick': function(info, tab) {
-                copyToClipboard(tab, _action.id);
-            }
-        });
-    })(action);
+function copyLinkWithNameHandler(tab) {
+    chrome.tabs.sendRequest(tab.id, 'copy', function(node) {
+        copyToClipboard(node, 'copyTitleUrl');
+    });
 }
 
 function createContextMenu() {
     chrome.contextMenus.removeAll();
     var dActions = JSON.parse(localStorage.getItem('actions'));
 
+    var documentUrlPatterns = ['http://*/*', 'https://*/*'];
+
     for (var i in dActions) {
-        buildContextMenu(actions[i]);
+        var action = actions[i];
+        chrome.contextMenus.create({
+            id: action.id,
+            title: action.description,
+            contexts: ['page'],
+            documentUrlPatterns: documentUrlPatterns
+        });
     }
+
+    chrome.contextMenus.create({
+        id: 'url',
+        title: 'copy link with name',
+        contexts: ['link'],
+        documentUrlPatterns: documentUrlPatterns
+    });
+
+    chrome.contextMenus.onClicked.addListener(function(info, tab) {
+        switch (info.menuItemId) {
+            case 'url':
+                copyLinkWithNameHandler(tab);
+                break;
+            default:
+                copyToClipboard(tab, info.menuItemId);
+        }
+    });
 }
 
 function init() {
