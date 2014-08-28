@@ -18,6 +18,9 @@ the default copy patter is "url (title)", you can change whatever you want but k
 
 ##Change log
 ===========
+0.0.110
+add copy link with name fature.
+
 0.0.109
 chrome shortcut support. Default extension is "Shift+Alt+C". You can setup shortcut you want to enable fast copy one option of 5.
 
