@@ -281,28 +281,29 @@ module.exports = function(grunt) {
         //         }
         //     }
         // },
-        // uglify: {
-        //     content: {
-        //         // files: {
-        //         //     '<%= config.dist %>/scripts/contentscript.js': [
-        //         //         '.tmp/concat/scripts/contentscript.js'
-        //         //     ]
-        //         // }
-        //         files: [{
-        //             dest: '<%= config.dist %>/scripts/contentscript.js',
-        //             src: ['.tmp/concat/scripts/contentscript.js']
-        //         }]
-        //     }
-        // },
-        // concat: {
-        //     generated: {
-        //         files: [{
-        //             dest: '.tmp/concat/scripts/contentscript.js',
-        //             src: [
-        //             ]
-        //         }]
-        //     }
-        // },
+        uglify: {
+            content: {
+                // files: {
+                //     '<%= config.dist %>/scripts/contentscript.js': [
+                //         '.tmp/concat/scripts/contentscript.js'
+                //     ]
+                // }
+                files: [{
+                    dest: '<%= config.dist %>/scripts/contentscript.js',
+                    src: ['.tmp/concat/scripts/contentscript.js']
+                }]
+            }
+        },
+        concat: {
+            generated: {
+                files: [{
+                    dest: '.tmp/concat/scripts/contentscript.js',
+                    src: [
+                        '<%= config.app %>/scripts/contentscript.js',
+                    ]
+                }]
+            }
+        },
 
         uncss: {
             dist: {
