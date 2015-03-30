@@ -1,0 +1,15 @@
+/* Will be compiled down to a single stylesheet with your sass files */
+body {
+    /* Defaults css for cssmin process */
+    /*width: 160px;*/
+}
+
+.copy2bord-container .list-group, .copy2bord-container h5 {
+    margin: 0px;
+}
+
+.section-wrapper {
+    min-height: 60px;
+    border-top: 1px solid #DADADA;
+    padding-top: 20px;
+}

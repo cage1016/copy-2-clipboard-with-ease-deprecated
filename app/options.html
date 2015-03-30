@@ -1,68 +1,36 @@
 <!DOCTYPE html>
 
-<html ng-app>
+<html>
 
 <head>
-    <!-- build:css styles/tidy.css -->
-    <link href="bower_components/bootstrap-css-only/css/bootstrap.css" rel="stylesheet">
-    <!-- endbuild -->
-
-    <!-- build:js scripts/option.js -->
-    <script type="text/javascript" charset="utf-8" src='scripts/option.js'></script>
-    <!-- endbuild -->
-    <!-- build:js scripts/angular.min.js -->
-    <script type="text/javascript" charset="utf-8" src='bower_components/angular/angular.js'></script>
-    <!-- endbuild -->
+    <meta charset="utf-8">
+    <link href="styles/main.css" rel="stylesheet">
 </head>
 
-<body ng-controller="optionCtrl">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <h1 id="glyphicons" class="page-header">Copy Title Url Pattern</h1>
-                <div class="alert alert-info">
-                    <strong>mention!</strong> You can setup copy title url pattern but keep <strong>title, url</strong> keyword.
-                </div>
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
-                        <label for="inputPattern" class="col-sm-2 control-label ">Pattern</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="pattern" class="form-control" placeholder="Title Url Pattern">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputTestURL" class="col-sm-2 control-label">url</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-disabled="true" ng-model="url" class="form-control" placeholder="url">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputTestURL" class="col-sm-2 control-label">title</label>
-                        <div class="col-sm-10">
-                            <input type="title" ng-disabled="true" ng-model="title" class="form-control" placeholder="title">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                           <button type="button" ng-click="resetDefault()" class="btn btn-danger">Reset Default</button>
-                        </div>
-                    </div>
-                </form>
+<body id="example">
 
+<div class="pusher">
+    <div class="full hight">
+
+
+        <div class="header segment">
+            <div class="container">
+                <div class="introduction">
+                    <h1 class="ui header">
+                        系統設定
+                    </h1>
+
+                    <p>A button indicates a possible user action</p>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-12 col-md-12 col-sm-12">
-                <h3 id="list-group-badges">Copy text Preview</h3>
-                <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="action in actions">
-                        {{action.description}} ->
-                        <span class="text-success">{{ preview(action) ||'loading...'}}</span>
-                    </li>
-                </ul>
-            </div>
+        <div id="app" class="main container">
         </div>
     </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src='javascript/optionVendors.js'></script>
+<script type="text/javascript" charset="utf-8" src='javascript/optionBundle.js'></script>
 </body>
 
 </html>

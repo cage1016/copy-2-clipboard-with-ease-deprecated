@@ -30,24 +30,37 @@ AppDispatcher.register(function (action) {
     switch (action.actionType) {
         case PatternConstants.PATTERN_UPDATE:
             pattern = action.pattern.trim();
-            if (pattern !== '') {
 
-                var cp2 = JSON.parse(localStorage.getItem('cp2'));
-                cp2.pattern = pattern;
+            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2.pattern = pattern;
 
-                for (var i in cp2.actions) {
-                    var action = cp2.actions[i];
-                    if (action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShorten')
-                        action.name = pattern;
-                }
-                localStorage.setItem('cp2', JSON.stringify(cp2));
-
-                chrome.storage.sync.set({"cp2": cp2}, function () {
-                    console.log("setting cp2 to " + JSON.stringify(cp2));
-                });
-
-                PatternStore.emitChange();
+            for (var i in cp2.actions) {
+                var action = cp2.actions[i];
+                if (action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShorten')
+                    action.name = pattern;
             }
+            localStorage.setItem('cp2', JSON.stringify(cp2));
+
+            chrome.storage.sync.set({"cp2": cp2}, function () {
+                console.log("PatternConstants.PATTERN_UPDATE: setting cp2");
+            });
+
+            PatternStore.emitChange();
+            break;
+
+        case PatternConstants.PATTERN_RESET:
+
+            var resetPattern = JSON.parse(localStorage.getItem('resetData')).pattern;
+            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2.pattern = resetPattern;
+
+            localStorage.setItem('cp2', JSON.stringify(cp2));
+
+            chrome.storage.sync.set({"cp2": cp2}, function () {
+                console.log("PatternConstants.PATTERN_RESET: setting cp2");
+            });
+
+            PatternStore.emitChange();
             break;
     }
 

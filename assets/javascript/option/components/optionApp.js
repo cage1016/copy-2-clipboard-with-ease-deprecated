@@ -1,33 +1,52 @@
 /** @jsx React.DOM */
+
+var bg = chrome.extension.getBackgroundPage();
+
 var React = require('react');
+
 var PatternStore = require('../stores/patternStore');
+var ActionsStore = require('../stores/actionsStore');
+
 var PatternInput = require('./optionApp.patternInput.react');
+var ActionList = require('./optionApp.actionList.react');
+var ActionPreview = require('./optionApp.actionPreview.react');
 
+var ActionsActions = require('../actions/actionsActions');
+var PatternActions = require('./../actions/paternActions');
 
-function getPatternStore() {
+function getStateFromStores() {
     return {
-        pattern: PatternStore.get()
+        pattern: PatternStore.get(),
+        actions: ActionsStore.getAll(),
+        previewData: JSON.parse(localStorage.getItem('cp2')).previewData
     };
 }
 
-var patternApp = React.createClass({
+var optionApp = React.createClass({
 
     getInitialState: function () {
-        return getPatternStore();
+        return getStateFromStores();
     },
 
     componentDidMount: function () {
         PatternStore.addChangeListener(this._onChange);
+        ActionsStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function () {
         PatternStore.removeChangeListener(this._onChange);
+        ActionsStore.removeChangeListener(this._onChange);
     },
 
     render: function () {
         return (
             <div>
-                <PatternInput pattern={this.state.pattern} />
+                <div className="ui raised segment">
+                    <PatternInput pattern={this.state.pattern} previewData={this.state.previewData}/>
+                    <ActionPreview actions={this.state.actions} previewData={this.state.previewData}/>
+                    <ActionList actions={this.state.actions}/>
+                </div>
+                <div className="ui purple button" onClick={this._resetSetting}>Reset Settigns</div>
             </div>
         );
     },
@@ -36,8 +55,13 @@ var patternApp = React.createClass({
      * Event handler for 'change' events coming from the TodoStore
      */
     _onChange: function () {
-        this.setState(getPatternStore());
+        this.setState(getStateFromStores());
+    },
+
+    _resetSetting: function(){
+        ActionsActions.resetAction();
+        PatternActions.resetPattern();
     }
 });
 
-module.exports = patternApp;
+module.exports = optionApp;

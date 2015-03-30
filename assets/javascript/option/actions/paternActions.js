@@ -7,6 +7,12 @@ var PatternActions = {
             actionType: PatternConstants.PATTERN_UPDATE,
             pattern: pattern
         });
+    },
+
+    resetPattern: function(){
+        AppDispatcher.dispatch({
+            actionType: PatternConstants.PATTERN_RESET
+        });
     }
 };
 
