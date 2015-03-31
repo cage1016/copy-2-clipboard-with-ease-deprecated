@@ -2,28 +2,14 @@
 <html>
 
 <head>
-    <!-- build:js scripts/popup.js -->
-    <script src="scripts/popup.js"></script>
-    <!-- endbuild -->
-
-    <!-- Stylesheets we want to minify as usual -->
-    <!-- build:css styles/main.css -->
-    <link href="styles/main.css" rel="stylesheet">
-    <!-- endbuild -->
-
-    <!-- Stylesheets we would like cleaned -->
-    <!-- build:css styles/tidy.css -->
-    <!-- just here to make sure we reference styles/tidy.css -->
-    <link href="bower_components/bootstrap-css-only/css/bootstrap.css" rel="stylesheet">
-    <!-- endbuild -->
+    <link href="styles/popup.css" rel="stylesheet">
 </head>
 
-<body id="popup">
-    <!-- CHROME EXTENSION POPUP -->
-    <div class="copy2bord-container">
-        <div id="actions" class="list-group">
-        </div>
-    </div>
+<body>
+    <div id="app"></div>
+
+    <script type="text/javascript" charset="utf-8" src='javascript/popupVendors.js'></script>
+    <script type="text/javascript" charset="utf-8" src='javascript/popupBundle.js'></script>
 </body>
 
 </html>
