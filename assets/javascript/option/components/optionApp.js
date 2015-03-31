@@ -10,6 +10,7 @@ var ActionsStore = require('../stores/actionsStore');
 var PatternInput = require('./optionApp.patternInput.react');
 var ActionList = require('./optionApp.actionList.react');
 var ActionPreview = require('./optionApp.actionPreview.react');
+var ActionShortcut = require('./optionApp.actionShortcut.react');
 
 var ActionsActions = require('../actions/actionsActions');
 var PatternActions = require('./../actions/paternActions');
@@ -42,9 +43,18 @@ var optionApp = React.createClass({
         return (
             <div>
                 <div className="ui raised segment">
-                    <PatternInput pattern={this.state.pattern} previewData={this.state.previewData}/>
-                    <ActionPreview actions={this.state.actions} previewData={this.state.previewData}/>
-                    <ActionList actions={this.state.actions}/>
+                    <div>
+                        <a className="ui teal ribbon label">Pattern and Preview</a>
+                        <p>
+                            <PatternInput pattern={this.state.pattern} previewData={this.state.previewData}/>
+                            <ActionPreview actions={this.state.actions} previewData={this.state.previewData}/>
+                        </p>
+                        <a className="ui teal ribbon label">Actions Setup</a>
+                        <p>
+                            <ActionShortcut/>
+                            <ActionList actions={this.state.actions}/>
+                        </p>
+                    </div>
                 </div>
                 <div className="ui purple button" onClick={this._resetSetting}>Reset Settigns</div>
             </div>
@@ -58,7 +68,7 @@ var optionApp = React.createClass({
         this.setState(getStateFromStores());
     },
 
-    _resetSetting: function(){
+    _resetSetting: function () {
         ActionsActions.resetAction();
         PatternActions.resetPattern();
     }
