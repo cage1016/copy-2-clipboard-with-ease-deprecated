@@ -14,13 +14,16 @@ var ActionListItem = React.createClass({
     },
 
     render: function () {
-        var small = null;
+        var small = null, _default = null;
         if (this.props.action.small) {
             small = <span className="shorten">Shorten</span>;
         }
+        if (this.props.action.default) {
+            _default = <i className="star icon"></i>;
+        }
 
         return (
-            <div className="fluid ui button action-item" onClick={this._onClick}>{this.props.action.name} {small}</div>
+            <div className="fluid ui button action-item" onClick={this._onClick}>{_default} {this.props.action.name} {small}</div>
         )
     },
 
