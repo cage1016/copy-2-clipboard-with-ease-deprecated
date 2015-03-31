@@ -26,15 +26,12 @@ function copyHandler(tab, actionId) {
     cb.setBadgeText({text: '...'});
     cb.setBadgeBackgroundColor(settings.STATUSCOLOR.ok);
 
-    var pattern = (function (id) {
-        var r;
-        for (var i in JSON.parse(localStorage.getItem('actions'))) {
-            var action = settings.ACTIONS[i];
-            if (action.id === actionId)
-                r = action;
-        }
-        return r;
-    })(actionId);
+    var pattern = JSON.parse(localStorage.getItem('cp2')).actions.filter(function (action) {
+        return action.id === actionId;
+    });
+    if (pattern.length) {
+        pattern = pattern[0];
+    }
 
     copyToClipboard(tab, pattern, function (result) {
         if (result.status == 'err')
@@ -54,7 +51,7 @@ function copyHandler(tab, actionId) {
 
 function createContextMenu() {
     chrome.contextMenus.removeAll();
-    var dActions = JSON.parse(localStorage.getItem('actions'));
+    var dActions = JSON.parse(localStorage.getItem('cp2')).actions;
 
     for (var i in dActions) {
         var action = settings.ACTIONS[i];
@@ -86,6 +83,26 @@ function valueChanged(newValue) {
 //chrome.storage.sync.clear();
 
 
+function syncInit() {
+    var syncObject = {
+        'pattern': settings.pattern,
+        'actions': settings.ACTIONS,
+        'version': settings.VERSION,
+        'previewData': settings.PREVIEWDATA
+    };
+
+    localStorage.setItem('resetData', JSON.stringify({
+        'pattern': settings.pattern,
+        'actions': settings.ACTIONS
+    }));
+
+    chrome.storage.sync.set({
+        "cp2": syncObject
+    }, function () {
+        valueChanged(syncObject);
+    });
+}
+
 chrome.storage.onChanged.addListener(function (changes, namespace) {
     if (changes["cp2"]) {
         valueChanged(changes["cp2"].newValue);
@@ -95,20 +112,20 @@ chrome.storage.onChanged.addListener(function (changes, namespace) {
 
 chrome.storage.sync.get("cp2", function (val) {
     if (!val.cp2) {
-
-        var syncObject = {
-            'pattern': settings.pattern,
-            'actions': settings.ACTIONS
-        };
-
-        chrome.storage.sync.set({
-            "cp2": syncObject
-        }, function () {
-            valueChanged(syncObject);
-        });
+        syncInit();
     } else {
+        if (!val.cp2.version) {
+            syncInit();
+            return;
+        }
+
+        if (val.cp2.version < settings.VERSION) {
+            syncInit();
+            return;
+        }
+
         valueChanged(val.cp2);
     }
 });
 
-
+window.copyHandler = copyHandler;

@@ -1,11 +1,13 @@
+var settings = require('./settings');
+
 function shortenUrl(longUrl, incognito, callback) {
     var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open('POST', url + '?key=' + key, true);
+    xmlhttp.open('POST', settings.URL + '?key=' + settings.KEY, true);
     xmlhttp.setRequestHeader('Content-Type', 'application/json');
 
     xmlhttp.onreadystatechange = function () {
         if (xmlhttp.readyState == 4 && xmlhttp.status != 0) {
-            clearTimeout(timer);
+            clearTimeout(settings.TIMER);
 
             var response = JSON.parse(xmlhttp.responseText);
 
@@ -19,7 +21,7 @@ function shortenUrl(longUrl, incognito, callback) {
                 callback({status: 'success', message: response.id});
             }
         }
-    }
+    };
 
     xmlhttp.send(JSON.stringify({'longUrl': longUrl}));
 
@@ -27,7 +29,7 @@ function shortenUrl(longUrl, incognito, callback) {
             xmlhttp.abort();
             callback({status: 'error', message: chrome.i18n.getMessage('timeout_occurred')});
         }
-        , milliseconds);
+        , settings.MILLISECONDS);
 }
 
 module.exports = shortenUrl;
