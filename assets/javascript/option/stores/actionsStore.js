@@ -1,5 +1,8 @@
 'use strict';
 
+var log = require('../../log');
+var copy2clip = require('../../copy2clip');
+
 var AppDispatcher = require('../dispatcher/dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ActionsConstants = require('../constants/actionsConstants');
@@ -9,7 +12,7 @@ var CHANGE_EVENT = 'change';
 
 var ActionsStore = assign({}, EventEmitter.prototype, {
     getAll: function () {
-        return JSON.parse(localStorage.getItem('cp2')).actions;
+        return copy2clip.getActions();
     },
 
     emitChange: function () {
@@ -26,29 +29,32 @@ var ActionsStore = assign({}, EventEmitter.prototype, {
 });
 
 
+var handler = function (msg) {
+    chrome.storage.sync.set({'cp2': copy2clip.toCp2()}, function () {
+        log(msg);
+    });
+
+    ActionsStore.emitChange();
+};
+
 AppDispatcher.register(function (action) {
-    var id, cp2;
+    var id;
     switch (action.actionType) {
         case ActionsConstants.ACTIONS_UPDATE_DEFAULT:
             id = action.id;
 
             if (id) {
-                cp2 = JSON.parse(localStorage.getItem('cp2'));
-
-                for (var i in cp2.actions) {
-                    var cpaction = cp2.actions[i];
-                    cpaction.default = false;
-                    if (id === cpaction.id) {
-                        cpaction.default = true;
+                var actionMap = function (item) {
+                    item.default = false;
+                    if (id === item.id) {
+                        item.default = true;
                     }
-                }
-                localStorage.setItem('cp2', JSON.stringify(cp2));
+                    return item;
+                };
+                var actions = copy2clip.getActions().map(actionMap);
+                copy2clip.setActions(actions);
 
-                chrome.storage.sync.set({'cp2': cp2}, function () {
-                    console.log('ActionsConstants.ACTIONS_UPDATE_DEFAULT: setting cp2');
-                });
-
-                ActionsStore.emitChange();
+                handler('ActionsConstants.ACTIONS_UPDATE_DEFAULT: setting cp2');
             }
             break;
 
@@ -56,76 +62,62 @@ AppDispatcher.register(function (action) {
             id = action.id;
 
             if (id) {
-                cp2 = JSON.parse(localStorage.getItem('cp2'));
 
-                cp2.actions = cp2.actions.map(function (c) {
-                    if (c.id === id) {
-                        c.enable = action.enabled;
+                // 1.
+                var actionMap2 = function (item) {
+                    if (item.id === id) {
+                        item.enable = action.enabled;
                     }
-                    return c;
-                });
+                    return item;
+                };
 
-                var enabledActions = cp2.actions.filter(function (c) {
-                    return c.enable;
-                });
+                copy2clip.setActions(copy2clip.getActions().map(actionMap2));
 
-                // reset default
-                if (enabledActions.length === 1) {
-                    cp2.actions = cp2.actions.map(function (c) {
-                        c.default = false;
-                        if (enabledActions[0].id === c.id) {
-                            c.default = true;
+                // 2.
+                var actionFilter = function (item) {
+                    return item.enable;
+                };
+                var enabledActions = copy2clip.getActions().filter(actionFilter);
+
+                var defaultAction = copy2clip.getDefaultAction();
+                if (!defaultAction.enable) {
+                    // reset default
+                    var actionMap3 = function (item) {
+                        item.default = false;
+                        if (enabledActions[0].id === item.id) {
+                            item.default = true;
                         }
-                        return c;
-                    });
+                        return item;
+                    };
+                    copy2clip.setActions(copy2clip.getActions().map(actionMap3));
                 }
 
-
-                localStorage.setItem('cp2', JSON.stringify(cp2));
-
-                chrome.storage.sync.set({'cp2': cp2}, function () {
-                    console.log('ActionsConstants.ACTIONS_UPDATE_ENABLED: setting cp2');
-                });
-
-                ActionsStore.emitChange();
+                handler('ActionsConstants.ACTIONS_UPDATE_ENABLED: setting cp2');
             }
 
             break;
 
         case ActionsConstants.ACTIONS_RESET:
 
-            var resetActions = JSON.parse(localStorage.getItem('resetData')).actions;
-            cp2 = JSON.parse(localStorage.getItem('cp2'));
-            cp2.actions = resetActions;
+            var resetActions = copy2clip.getResetData().actions;
+            copy2clip.setActions(resetActions);
 
-            localStorage.setItem('cp2', JSON.stringify(cp2));
-
-            chrome.storage.sync.set({'cp2': cp2}, function () {
-                console.log('ActionsConstants.ACTIONS_RESET: setting cp2');
-            });
-
-            ActionsStore.emitChange();
+            handler('ActionsConstants.ACTIONS_RESET: setting cp2');
 
             break;
 
         case ActionsConstants.ACTIONS_REASSIGN_DEFAULT:
 
-            cp2 = JSON.parse(localStorage.getItem('cp2'));
-
-            for (var key in cp2.actions) {
-                cp2.actions[key].default = false;
-                if (cp2.actions[key].enable) {
-                    cp2.actions[key].default = true;
+            var actionMap4 = function (item) {
+                item.default = false;
+                if (item.enable) {
+                    item.default = true;
                 }
-            }
+                return item;
+            };
+            copy2clip.setActions(copy2clip.getActions().map(actionMap4));
 
-            localStorage.setItem('cp2', JSON.stringify(cp2));
-
-            chrome.storage.sync.set({'cp2': cp2}, function () {
-                console.log('ActionsConstants.ACTIONS_REASSIGN_DEFAULT: setting cp2');
-            });
-
-            ActionsStore.emitChange();
+            handler('ActionsConstants.ACTIONS_REASSIGN_DEFAULT: setting cp2');
 
             break;
     }

@@ -1,5 +1,8 @@
 'use strict';
 
+var log = require('../../log');
+var copy2clip = require('../../copy2clip');
+
 var AppDispatcher = require('../dispatcher/dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ShortcutStateConstants = require('../constants/shortcutStateConstants');
@@ -9,7 +12,7 @@ var CHANGE_EVENT = 'change';
 
 var ShortcutStateStore = assign({}, EventEmitter.prototype, {
     get: function () {
-        return JSON.parse(localStorage.getItem('cp2')).shortcutEnabled;
+        return copy2clip.getShortcutEnabled();
     },
 
     emitChange: function () {
@@ -25,49 +28,44 @@ var ShortcutStateStore = assign({}, EventEmitter.prototype, {
     }
 });
 
+
+var handler = function (msg) {
+    chrome.storage.sync.set({'cp2': copy2clip.toCp2()}, function () {
+        log(msg);
+    });
+
+    ShortcutStateStore.emitChange();
+};
+
 AppDispatcher.register(function (action) {
-    var cp2;
     switch (action.actionType) {
         case ShortcutStateConstants.SHORTCUT_UPDATE:
 
-            cp2 = JSON.parse(localStorage.getItem('cp2'));
-            // check how many action are enabled, you can not disable shortcut feature if has last action is enabled
-            var actions = cp2.actions.filter(function (action) {
-                return action.enable;
-            });
+            var actionFilter = function (item) {
+                return item.enable;
+            };
+            var actions = copy2clip.getActions(actionFilter);
 
             if (actions.length === 0) {
                 ShortcutStateStore.emitChange();
                 break;
             }
 
+            copy2clip.setShortcutEnabled(action.enabled);
 
-            cp2.shortcutEnabled = action.enabled;
-
-            localStorage.setItem('cp2', JSON.stringify(cp2));
-
-            chrome.storage.sync.set({'cp2': cp2}, function () {
-                console.log('ShortcutStateConstants.SHORTCUT_UPDATE: setting cp2');
-            });
-
-            ShortcutStateStore.emitChange();
+            handler('ShortcutStateConstants.SHORTCUT_UPDATE: setting cp2');
             break;
 
         case ShortcutStateConstants.SHORTCUT_RESET:
 
-            var shortcutEnabled = JSON.parse(localStorage.getItem('resetData')).shortcutEnabled;
-            cp2 = JSON.parse(localStorage.getItem('cp2'));
-            cp2.shortcutEnabled = shortcutEnabled;
+            var shortcutEnabled = copy2clip.getResetData().shortcutEnabled;
+            copy2clip.setShortcutEnabled(shortcutEnabled);
 
-            localStorage.setItem('cp2', JSON.stringify(cp2));
 
-            chrome.storage.sync.set({'cp2': cp2}, function () {
-                console.log('ShortcutStateConstants.SHORTCUT_RESET: setting cp2');
-            });
-
-            ShortcutStateStore.emitChange();
+            handler('ShortcutStateConstants.SHORTCUT_RESET: setting cp2');
             break;
     }
+
 
 });
 

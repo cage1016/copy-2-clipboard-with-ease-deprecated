@@ -5,6 +5,8 @@
 
 'use strict';
 
+var copy2clip = require('../../copy2clip');
+
 var React = require('react');
 
 var PatternStore = require('../stores/patternStore');
@@ -24,7 +26,7 @@ function getStateFromStores() {
     return {
         pattern: PatternStore.get(),
         actions: ActionsStore.getAll(),
-        previewData: JSON.parse(localStorage.getItem('cp2')).previewData,
+        previewData: copy2clip.getPreviewData(),
         shortcutEnabled: ShortcutStateStore.get()
     };
 }
@@ -68,10 +70,7 @@ var optionApp = React.createClass({
             </div>
         );
     },
-
-    /**
-     * Event handler for 'change' events coming from the TodoStore
-     */
+    
     _onChange: function () {
         this.setState(getStateFromStores());
     },

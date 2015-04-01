@@ -77,11 +77,7 @@ function valueChanged(newValue) {
         buf.lastupdated = Date.now();
 
         copy2clip.save(buf);
-        copy2clip.save({
-            'pattern': buf.pattern,
-            'actions': buf.actions,
-            'shortcutEnabled': buf.shortcutEnabled
-        });
+
         log('sync setting pattern to');
         log(buf);
     }
@@ -98,6 +94,14 @@ function syncInit() {
         'previewData': settings.PREVIEWDATA,
         'shortcutEnabled': settings.SHORTCUT_ENABLED
     };
+
+    copy2clip.save({
+        'resetData': {
+            'pattern': settings.pattern,
+            'actions': settings.ACTIONS,
+            'shortcutEnabled': settings.SHORTCUT_ENABLED
+        }
+    });
 
     chrome.storage.sync.set({
         'cp2': syncObject
