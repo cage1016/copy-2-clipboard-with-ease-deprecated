@@ -29,5 +29,16 @@
         "http://*/*",
         "https://*/*",
         "storage"
-    ]
+    ],
+    "commands": {
+        "trigger-fast-copy": {
+            "suggested_key": {
+                "default": "Alt+Shift+C",
+                "mac": "Command+Shift+C",
+                "chromeos": "Alt+Shift+C",
+                "linux": "Alt+Shift+C"
+            },
+            "description": "fast copy"
+        }
+    }
 }
