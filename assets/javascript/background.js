@@ -4,6 +4,8 @@
 
 var copyToClipboard = require('./copyToClipboard');
 var settings = require('./settings');
+var log = require('./log');
+var copy2clip = require('./copy2clip');
 require('./analytics');
 
 var cb = chrome.browserAction;
@@ -28,14 +30,9 @@ function copyHandler(tab, actionId) {
     cb.setBadgeText({text: '...'});
     cb.setBadgeBackgroundColor(settings.STATUSCOLOR.ok);
 
-    var pattern = JSON.parse(localStorage.getItem('cp2')).actions.filter(function (action) {
-        return action.id === actionId;
-    });
-    if (pattern.length) {
-        pattern = pattern[0];
-    }
+    var action = copy2clip.getActionById(actionId);
 
-    copyToClipboard(tab, pattern, function (result) {
+    copyToClipboard(tab, action, function (result) {
         if (result.status === 'err') {
             cb.setBadgeBackgroundColor(settings.STATUSCOLOR.err);
         }
@@ -54,9 +51,9 @@ function copyHandler(tab, actionId) {
 
 function createContextMenu() {
     chrome.contextMenus.removeAll();
-    var dActions = JSON.parse(localStorage.getItem('cp2')).actions;
+    var actions = copy2clip.getActions();
 
-    for (var i in dActions) {
+    for (var i in actions) {
         var action = settings.ACTIONS[i];
         (function (action) {
             chrome.contextMenus.create({
@@ -78,8 +75,15 @@ function valueChanged(newValue) {
     if (newValue) {
         var buf = newValue;
         buf.lastupdated = Date.now();
-        localStorage.setItem('cp2', JSON.stringify(buf));
-        console.log('sync setting pattern to ' + buf);
+
+        copy2clip.save(buf);
+        copy2clip.save({
+            'pattern': buf.pattern,
+            'actions': buf.actions,
+            'shortcutEnabled': buf.shortcutEnabled
+        });
+        log('sync setting pattern to');
+        log(buf);
     }
 }
 
@@ -94,12 +98,6 @@ function syncInit() {
         'previewData': settings.PREVIEWDATA,
         'shortcutEnabled': settings.SHORTCUT_ENABLED
     };
-
-    localStorage.setItem('resetData', JSON.stringify({
-        'pattern': settings.pattern,
-        'actions': settings.ACTIONS,
-        'shortcutEnabled': settings.SHORTCUT_ENABLED
-    }));
 
     chrome.storage.sync.set({
         'cp2': syncObject
@@ -140,17 +138,11 @@ chrome.commands.onCommand.addListener(function (command) {
         currentWindow: true
     }, function (tabs) {
 
-        var cp2 = JSON.parse(localStorage.getItem('cp2'));
-        var shortcutEnabled = cp2.shortcutEnabled;
+        if (copy2clip.getShortcutEnabled()) {
 
-        if (shortcutEnabled) {
-
-            var action = cp2.actions.filter(function (action) {
-                return action.default;
-            });
-            if (action.length) {
-                action = action[0];
-                copyHandler(tabs[0], action.id);
+            var defaultAction = copy2clip.getDefaultAction();
+            if (defaultAction) {
+                copyHandler(tabs[0], defaultAction.id);
 
             }
         }
