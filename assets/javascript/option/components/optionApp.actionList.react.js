@@ -1,3 +1,10 @@
+/** @jsx React.DOM */
+
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
+
 var React = require('react');
 
 var ActionsListItem = require('./optionApp.actionListItem.react');
@@ -32,7 +39,7 @@ var ActionList = React.createClass({
                         {actions}
                 </tbody>
             </table>
-        )
+        );
     }
 
 

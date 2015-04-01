@@ -1,3 +1,5 @@
+/*jshint -W083 */
+
 'use strict';
 
 var copyToClipboard = require('./copyToClipboard');
@@ -12,10 +14,10 @@ function copy(text) {
     copyDiv.contentEditable = true;
     document.body.appendChild(copyDiv);
     copyDiv.innerHTML = text;
-    copyDiv.unselectable = "off";
+    copyDiv.unselectable = 'off';
     copyDiv.focus();
     document.execCommand('SelectAll');
-    document.execCommand("Copy", false, null);
+    document.execCommand('Copy', false, null);
     document.body.removeChild(copyDiv);
 }
 
@@ -34,8 +36,9 @@ function copyHandler(tab, actionId) {
     }
 
     copyToClipboard(tab, pattern, function (result) {
-        if (result.status == 'err')
+        if (result.status === 'err') {
             cb.setBadgeBackgroundColor(settings.STATUSCOLOR.err);
+        }
         else {
             cb.setBadgeBackgroundColor(settings.STATUSCOLOR.ok);
             copy(result.message);
@@ -76,7 +79,7 @@ function valueChanged(newValue) {
         var buf = newValue;
         buf.lastupdated = Date.now();
         localStorage.setItem('cp2', JSON.stringify(buf));
-        console.log("sync setting pattern to " + buf);
+        console.log('sync setting pattern to ' + buf);
     }
 }
 
@@ -99,20 +102,20 @@ function syncInit() {
     }));
 
     chrome.storage.sync.set({
-        "cp2": syncObject
+        'cp2': syncObject
     }, function () {
         valueChanged(syncObject);
     });
 }
 
-chrome.storage.onChanged.addListener(function (changes, namespace) {
-    if (changes["cp2"]) {
-        valueChanged(changes["cp2"].newValue);
+chrome.storage.onChanged.addListener(function (changes) {
+    if (changes.cp2) {
+        valueChanged(changes.cp2.newValue);
     }
 });
 
 
-chrome.storage.sync.get("cp2", function (val) {
+chrome.storage.sync.get('cp2', function (val) {
     if (!val.cp2) {
         syncInit();
     } else {

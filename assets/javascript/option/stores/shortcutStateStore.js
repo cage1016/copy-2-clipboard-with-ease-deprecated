@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatcher/dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var ShortcutStateConstants = require('../constants/shortcutStateConstants');
@@ -24,11 +26,11 @@ var ShortcutStateStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function (action) {
-
+    var cp2;
     switch (action.actionType) {
         case ShortcutStateConstants.SHORTCUT_UPDATE:
 
-            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2 = JSON.parse(localStorage.getItem('cp2'));
             // check how many action are enabled, you can not disable shortcut feature if has last action is enabled
             var actions = cp2.actions.filter(function (action) {
                 return action.enable;
@@ -44,8 +46,8 @@ AppDispatcher.register(function (action) {
 
             localStorage.setItem('cp2', JSON.stringify(cp2));
 
-            chrome.storage.sync.set({"cp2": cp2}, function () {
-                console.log("ShortcutStateConstants.SHORTCUT_UPDATE: setting cp2");
+            chrome.storage.sync.set({'cp2': cp2}, function () {
+                console.log('ShortcutStateConstants.SHORTCUT_UPDATE: setting cp2');
             });
 
             ShortcutStateStore.emitChange();
@@ -54,13 +56,13 @@ AppDispatcher.register(function (action) {
         case ShortcutStateConstants.SHORTCUT_RESET:
 
             var shortcutEnabled = JSON.parse(localStorage.getItem('resetData')).shortcutEnabled;
-            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2 = JSON.parse(localStorage.getItem('cp2'));
             cp2.shortcutEnabled = shortcutEnabled;
 
             localStorage.setItem('cp2', JSON.stringify(cp2));
 
-            chrome.storage.sync.set({"cp2": cp2}, function () {
-                console.log("ShortcutStateConstants.SHORTCUT_RESET: setting cp2");
+            chrome.storage.sync.set({'cp2': cp2}, function () {
+                console.log('ShortcutStateConstants.SHORTCUT_RESET: setting cp2');
             });
 
             ShortcutStateStore.emitChange();

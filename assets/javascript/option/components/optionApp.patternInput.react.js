@@ -1,3 +1,10 @@
+/** @jsx React.DOM */
+
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
+
 var React = require('react');
 var PatternActions = require('./../actions/paternActions');
 
@@ -38,7 +45,7 @@ var PatternInput = React.createClass({
                     </div>
                 </div>
             </div>
-        )
+        );
     },
 
     _onChange: function (/*object*/ event) {

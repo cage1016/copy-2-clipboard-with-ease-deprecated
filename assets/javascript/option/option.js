@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+'use strict';
+
 var React = require('react');
 var OptionApp = require('./components/optionApp.js');
 

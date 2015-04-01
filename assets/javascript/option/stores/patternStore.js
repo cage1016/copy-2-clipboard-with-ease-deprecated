@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatcher/dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var PatternConstants = require('../constants/patternConstants');
@@ -25,24 +27,25 @@ var PatternStore = assign({}, EventEmitter.prototype, {
 
 
 AppDispatcher.register(function (action) {
-    var pattern;
+    var pattern, cp2;
 
     switch (action.actionType) {
         case PatternConstants.PATTERN_UPDATE:
             pattern = action.pattern.trim();
 
-            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2 = JSON.parse(localStorage.getItem('cp2'));
             cp2.pattern = pattern;
 
             for (var i in cp2.actions) {
-                var action = cp2.actions[i];
-                if (action.id === 'copyTitleUrl' || action.id === 'copyTitleUrlShorten')
+                var cpaction = cp2.actions[i];
+                if (cpaction.id === 'copyTitleUrl' || cpaction.id === 'copyTitleUrlShorten') {
                     action.name = pattern;
+                }
             }
             localStorage.setItem('cp2', JSON.stringify(cp2));
 
-            chrome.storage.sync.set({"cp2": cp2}, function () {
-                console.log("PatternConstants.PATTERN_UPDATE: setting cp2");
+            chrome.storage.sync.set({'cp2': cp2}, function () {
+                console.log('PatternConstants.PATTERN_UPDATE: setting cp2');
             });
 
             PatternStore.emitChange();
@@ -51,13 +54,13 @@ AppDispatcher.register(function (action) {
         case PatternConstants.PATTERN_RESET:
 
             var resetPattern = JSON.parse(localStorage.getItem('resetData')).pattern;
-            var cp2 = JSON.parse(localStorage.getItem('cp2'));
+            cp2 = JSON.parse(localStorage.getItem('cp2'));
             cp2.pattern = resetPattern;
 
             localStorage.setItem('cp2', JSON.stringify(cp2));
 
-            chrome.storage.sync.set({"cp2": cp2}, function () {
-                console.log("PatternConstants.PATTERN_RESET: setting cp2");
+            chrome.storage.sync.set({'cp2': cp2}, function () {
+                console.log('PatternConstants.PATTERN_RESET: setting cp2');
             });
 
             PatternStore.emitChange();

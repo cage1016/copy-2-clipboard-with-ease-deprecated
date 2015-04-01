@@ -1,3 +1,10 @@
+/** @jsx React.DOM */
+
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
+
 var React = require('react');
 var $ = require('jquery');
 
@@ -72,13 +79,13 @@ var ActionShortcut = React.createClass({
                 </div>
 
             </div>
-        )
+        );
     },
 
     _openKeyboardSettign: function () {
         chrome.tabs.create({
             url: 'chrome://extensions/#footer-section'
-        })
+        });
     },
 
     _shortcutStateChange: function () {

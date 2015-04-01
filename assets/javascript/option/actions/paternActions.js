@@ -1,3 +1,7 @@
+/** @jsx React.DOM */
+
+'use strict';
+
 var AppDispatcher = require('../dispatcher/dispatcher');
 var PatternConstants = require('../constants/patternConstants');
 

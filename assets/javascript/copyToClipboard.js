@@ -1,5 +1,6 @@
+'use strict';
+
 var shortenUrl = require('./shortUrl');
-var settings = require('./settings');
 
 var regexTitle = /title/gi;
 var regexUrl = /url/gi;
@@ -17,7 +18,7 @@ function copyToClipboard(tab, pattern, callback) {
             break;
         case 'copyTitleUrlShorten':
             shortenUrl(tab.url, tab.incognito, function (response) {
-                if (response.status != 'err') {
+                if (response.status !== 'err') {
                     var text = pattern.name.replace(regexUrl, response.message).replace(regexTitle, tab.title);
                     console.log('copy text = ' + text);
                     callback({message: text, status: 'ok'});
@@ -29,7 +30,7 @@ function copyToClipboard(tab, pattern, callback) {
             break;
         case 'copyUrlShorten':
             shortenUrl(tab.url, tab.incognito, function (response) {
-                if (response.status != 'err') {
+                if (response.status !== 'err') {
                     console.log('copy text = ' + response.message);
                     callback({message: response.message, status: 'ok'});
                 } else {

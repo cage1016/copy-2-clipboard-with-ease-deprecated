@@ -1,5 +1,10 @@
 /** @jsx React.DOM */
 
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
+
 var React = require('react');
 
 var ActionsStore = require('../option/stores/actionsStore');
@@ -47,7 +52,7 @@ var popupApp = React.createClass({
     _openOption: function () {
         chrome.tabs.create({
             url: 'chrome-extension://enhljbbieiohkpeejjfidfmmldjlhjhd/options.html'
-        })
+        });
     }
 
 });

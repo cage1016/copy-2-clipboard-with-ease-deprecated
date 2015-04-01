@@ -1,3 +1,10 @@
+/** @jsx React.DOM */
+
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
+
 var React = require('react');
 
 var regexTitle = /title/gi;
@@ -10,7 +17,7 @@ var ActionPreview = React.createClass({
 
         var allActions = this.props.actions;
         var previewData = this.props.previewData;
-        var rows = [];
+        var rows = [],r;
 
         for (var key in allActions) {
             var action = allActions[key];
@@ -19,11 +26,11 @@ var ActionPreview = React.createClass({
                     action.value = previewData.TITLE;
                     break;
                 case 'copyTitleUrl':
-                    var r = action.name.replace(regexUrl, previewData.URL);
+                    r = action.name.replace(regexUrl, previewData.URL);
                     action.value = r.replace(regexTitle, previewData.TITLE);
                     break;
                 case 'copyTitleUrlShorten':
-                    var r = action.name.replace(regexUrl, previewData.SHOTERNURL);
+                    r = action.name.replace(regexUrl, previewData.SHOTERNURL);
                     action.value = r.replace(regexTitle, previewData.TITLE);
                     break;
                 case 'copyUrlShorten':
@@ -55,7 +62,7 @@ var ActionPreview = React.createClass({
                     {rows}
                 </tbody>
             </table>
-        )
+        );
     }
 
 });

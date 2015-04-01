@@ -1,6 +1,9 @@
 /** @jsx React.DOM */
 
-var bg = chrome.extension.getBackgroundPage();
+/*jshint -W109*/
+/*jshint -W108*/
+
+'use strict';
 
 var React = require('react');
 
