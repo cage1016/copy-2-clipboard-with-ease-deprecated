@@ -1812,3 +1812,10 @@ body.progress.animated .ui.progress .bar {
         flex: none;
     }
 }
+
+/*over write*/
+#example .header.segment {
+    min-height: 0px;
+    padding-top: 50px;
+}
+

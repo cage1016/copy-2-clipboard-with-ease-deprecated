@@ -11,9 +11,9 @@ body {
 
 #app .action-item .shorten{
     font-size: 0.7em;
-    color: #91AA9D;
+    color: #00b5ad;
 }
 
 #app .action-item.ui.button{
-    background-color: #FCFFF5;
+    /*background-color: #FCFFF5;*/
 }
