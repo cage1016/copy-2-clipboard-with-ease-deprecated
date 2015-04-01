@@ -21,6 +21,12 @@ var ActionsActions = {
         AppDispatcher.dispatch({
             actionType: ActionsConstants.ACTIONS_RESET
         });
+    },
+
+    reassignActionDefault: function(){
+        AppDispatcher.dispatch({
+            actionType: ActionsConstants.ACTIONS_REASSIGN_DEFAULT
+        });
     }
 };
 

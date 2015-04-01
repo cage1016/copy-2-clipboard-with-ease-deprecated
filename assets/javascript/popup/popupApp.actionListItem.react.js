@@ -18,7 +18,7 @@ var ActionListItem = React.createClass({
         if (this.props.action.small) {
             small = <span className="shorten">Shorten</span>;
         }
-        if (this.props.action.default) {
+        if (this.props.action.default && this.props.shortcutEnabled) {
             _default = <i className="star icon"></i>;
         }
 

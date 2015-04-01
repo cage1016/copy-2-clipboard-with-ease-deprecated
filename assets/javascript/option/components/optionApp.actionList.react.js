@@ -11,7 +11,12 @@ var ActionList = React.createClass({
         var actions = [];
 
         for (var key in allActions) {
-            actions.push(<ActionsListItem key={key} action={allActions[key]} />);
+            actions.push(<ActionsListItem key={key} action={allActions[key]} shortcutEnabled={this.props.shortcutEnabled}/>);
+        }
+
+        var shortcutTh = null;
+        if (this.props.shortcutEnabled) {
+            shortcutTh = <th>Default Shortcut</th>;
         }
 
         return (
@@ -20,7 +25,7 @@ var ActionList = React.createClass({
                     <tr>
                         <th>Action</th>
                         <th>Enable</th>
-                        <th>Default Shortcut</th>
+                        {shortcutTh}
                     </tr>
                 </thead>
                 <tbody>

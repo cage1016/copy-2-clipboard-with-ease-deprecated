@@ -27,6 +27,16 @@ var PatternInput = React.createClass({
                     <label>Title</label>
                     <input value={this.props.previewData.TITLE} disabled="disabled"/>
                 </div>
+
+                <div className="ui icon message">
+                    <i className="help icon"></i>
+                    <div className="content">
+                        <div className="header">
+                            mention!
+                        </div>
+                        <p>You can setup copy title url pattern but keep <code><b>title</b></code>&nbsp;<code><b>url</b></code> keyword.</p>
+                    </div>
+                </div>
             </div>
         )
     },

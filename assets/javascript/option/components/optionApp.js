@@ -6,6 +6,7 @@ var React = require('react');
 
 var PatternStore = require('../stores/patternStore');
 var ActionsStore = require('../stores/actionsStore');
+var ShortcutStateStore = require('../stores/shortcutStateStore');
 
 var PatternInput = require('./optionApp.patternInput.react');
 var ActionList = require('./optionApp.actionList.react');
@@ -14,12 +15,14 @@ var ActionShortcut = require('./optionApp.actionShortcut.react');
 
 var ActionsActions = require('../actions/actionsActions');
 var PatternActions = require('./../actions/paternActions');
+var ShortcutStateActions = require('./../actions/shortcutStateActions');
 
 function getStateFromStores() {
     return {
         pattern: PatternStore.get(),
         actions: ActionsStore.getAll(),
-        previewData: JSON.parse(localStorage.getItem('cp2')).previewData
+        previewData: JSON.parse(localStorage.getItem('cp2')).previewData,
+        shortcutEnabled: ShortcutStateStore.get()
     };
 }
 
@@ -32,11 +35,13 @@ var optionApp = React.createClass({
     componentDidMount: function () {
         PatternStore.addChangeListener(this._onChange);
         ActionsStore.addChangeListener(this._onChange);
+        ShortcutStateStore.addChangeListener(this._onChange);
     },
 
     componentWillUnmount: function () {
         PatternStore.removeChangeListener(this._onChange);
         ActionsStore.removeChangeListener(this._onChange);
+        ShortcutStateStore.removeChangeListener(this._onChange);
     },
 
     render: function () {
@@ -51,8 +56,8 @@ var optionApp = React.createClass({
                         </p>
                         <a className="ui teal ribbon label">Actions Setup</a>
                         <p>
-                            <ActionShortcut/>
-                            <ActionList actions={this.state.actions}/>
+                            <ActionShortcut shortcutEnabled={this.state.shortcutEnabled}/>
+                            <ActionList actions={this.state.actions} shortcutEnabled={this.state.shortcutEnabled}/>
                         </p>
                     </div>
                 </div>
@@ -71,6 +76,7 @@ var optionApp = React.createClass({
     _resetSetting: function () {
         ActionsActions.resetAction();
         PatternActions.resetPattern();
+        ShortcutStateActions.resetShortcutState();
     }
 });
 

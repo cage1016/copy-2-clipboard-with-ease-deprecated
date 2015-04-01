@@ -88,12 +88,14 @@ function syncInit() {
         'pattern': settings.pattern,
         'actions': settings.ACTIONS,
         'version': settings.VERSION,
-        'previewData': settings.PREVIEWDATA
+        'previewData': settings.PREVIEWDATA,
+        'shortcutEnabled': settings.SHORTCUT_ENABLED
     };
 
     localStorage.setItem('resetData', JSON.stringify({
         'pattern': settings.pattern,
-        'actions': settings.ACTIONS
+        'actions': settings.ACTIONS,
+        'shortcutEnabled': settings.SHORTCUT_ENABLED
     }));
 
     chrome.storage.sync.set({
@@ -128,4 +130,29 @@ chrome.storage.sync.get("cp2", function (val) {
     }
 });
 
+chrome.commands.onCommand.addListener(function (command) {
+    console.log('Command:', command);
+    chrome.tabs.query({
+        active: true,
+        currentWindow: true
+    }, function (tabs) {
+
+        var cp2 = JSON.parse(localStorage.getItem('cp2'));
+        var shortcutEnabled = cp2.shortcutEnabled;
+
+        if (shortcutEnabled) {
+
+            var action = cp2.actions.filter(function (action) {
+                return action.default;
+            });
+            if (action.length) {
+                action = action[0];
+                copyHandler(tabs[0], action.id);
+
+            }
+        }
+    });
+});
+
+// assign copyHandler to global for chrome.extension.getBackgroundPage()
 window.copyHandler = copyHandler;

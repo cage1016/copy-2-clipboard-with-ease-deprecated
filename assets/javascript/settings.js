@@ -20,6 +20,7 @@ module.exports.PREVIEWDATA = {
     SHOTERNURL: 'http://goo.gl/Njku',
     TITLE: 'Google'
 };
+module.exports.SHORTCUT_ENABLED = true;
 
 module.exports.VERSION = '0.0.104';
 module.exports.ACTIONS = [{
