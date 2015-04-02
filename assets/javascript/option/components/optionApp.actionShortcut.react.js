@@ -5,6 +5,8 @@
 
 'use strict';
 
+var copy2clip = require('../../copy2clip');
+
 var React = require('react');
 var $ = require('jquery');
 
@@ -23,7 +25,10 @@ var ActionShortcut = React.createClass({
 
 
     getInitialState: function () {
-        return {commandShortcut: {}};
+        return {
+            commandShortcut: {},
+            OSDefaultShortcut: copy2clip.get('os').defaultShortcut
+        };
     },
 
     componentDidMount: function () {
@@ -73,7 +78,7 @@ var ActionShortcut = React.createClass({
                         <p>
                             You can modify shortcut in&nbsp;
                             <a href="chrome://extensions/#footer-section" onClick={this._openKeyboardSettign}>Keyboard shortcuts</a>
-                        &nbsp;in the bottom of Chrome extension. extension default shortcut is Alt+Shift+C. It will be empty if you have been setup it up with other feature.
+                        &nbsp;in the bottom of Chrome extension. extension default shortcut is <code>{this.state.OSDefaultShortcut}</code>. It will be empty if you have been setup it up with other feature.
                         </p>
                     </div>
                 </div>

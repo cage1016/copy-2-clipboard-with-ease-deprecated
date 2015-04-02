@@ -56,3 +56,10 @@ module.exports.ACTIONS = [{
     default: false,
     enable: true
 }];
+
+module.exports.DEFAULT_SHORTCUT = {
+    'win': 'Ctrl+Shift+C',
+    'mac': 'MacCtrl+Shift+C',
+    'cros': 'Ctrl+Shift+C',
+    'linux': 'Ctrl+Shift+C'
+};

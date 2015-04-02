@@ -103,6 +103,13 @@ function syncInit() {
         }
     });
 
+    chrome.runtime.getPlatformInfo(function (platformInfo) {
+        copy2clip.set('os', {
+            os: platformInfo.os,
+            defaultShortcut: settings.DEFAULT_SHORTCUT[platformInfo.os]
+        });
+    });
+
     chrome.storage.sync.set({
         'cp2': syncObject
     }, function () {

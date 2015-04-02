@@ -33,10 +33,10 @@
     "commands": {
         "trigger-fast-copy": {
             "suggested_key": {
-                "default": "Alt+Shift+C",
-                "mac": "Command+Shift+C",
-                "chromeos": "Alt+Shift+C",
-                "linux": "Alt+Shift+C"
+                "default": "Ctrl+Shift+C",
+                "mac": "MacCtrl+Shift+C",
+                "chromeos": "Ctrl+Shift+C",
+                "linux": "Ctrl+Shift+C"
             },
             "description": "fast copy"
         }
