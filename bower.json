@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "name": "copy-2-clipboad-with-ease",
     "version": "0.0.0",
     "dependencies": {
@@ -7,3 +8,13 @@
     },
     "devDependencies": {}
 }
+=======
+  "name": "copy-2-clipboad-with-ease",
+  "version": "0.0.0",
+  "dependencies": {},
+  "devDependencies": {
+    "react": "~0.13.1",
+    "semantic": "~1.11.6"
+  }
+}
+>>>>>>> release/v1.0.0

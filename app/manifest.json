@@ -1,6 +1,10 @@
 {
     "name": "copy 2 clipboard with ease",
+<<<<<<< HEAD
     "version": "0.0.110",
+=======
+    "version": "1.0.0",
+>>>>>>> release/v1.0.0
     "manifest_version": 2,
     "description": "s simple way to copy tab title and url with ease",
     "icons": {
@@ -11,7 +15,7 @@
     "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
     "background": {
         "scripts": [
-            "scripts/background.js"
+            "javascript/background.js"
         ]
     },
     "browser_action": {
@@ -40,14 +44,30 @@
         "tabs",
         "contextMenus",
         "http://*/*",
+<<<<<<< HEAD
         "https://*/*"
+=======
+        "https://*/*",
+        "storage"
+>>>>>>> release/v1.0.0
     ],
     "commands": {
         "trigger-fast-copy": {
             "suggested_key": {
+<<<<<<< HEAD
                 "default": "Alt+Shift+C"
+=======
+                "default": "Ctrl+Shift+C",
+                "mac": "MacCtrl+Shift+C",
+                "chromeos": "Ctrl+Shift+C",
+                "linux": "Ctrl+Shift+C"
+>>>>>>> release/v1.0.0
             },
             "description": "fast copy"
         }
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> release/v1.0.0

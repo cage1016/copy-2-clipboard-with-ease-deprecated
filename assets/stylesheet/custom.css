@@ -1,0 +1,19 @@
+/* Will be compiled down to a single stylesheet with your sass files */
+body {
+    /* Defaults css for cssmin process */
+    min-width: 160px;
+    background-color: #E0E0E0;
+}
+
+#app .action-item {
+    border-bottom: 1px solid rgb(211, 211, 211);
+}
+
+#app .action-item .shorten{
+    font-size: 0.7em;
+    color: #00b5ad;
+}
+
+#app .action-item.ui.button{
+    /*background-color: #FCFFF5;*/
+}
