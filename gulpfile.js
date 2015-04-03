@@ -31,7 +31,8 @@ var gutil = require('gulp-util');
 var livereload = require('gulp-livereload');
 var streamify = require('gulp-streamify');
 var notify = require('gulp-notify');
-var cssmin = require('cssmin');
+
+var minifyCSS = require('gulp-minify-css');
 
 var react = require('gulp-react');
 
@@ -58,7 +59,9 @@ var browserifyTask = function (options) {
         entries: [options.src], // Only need initial file, browserify finds the rest
         transform: [reactify], // We want to convert JSX to normal javascript
         debug: options.development, // Gives us sourcemapping
-        cache: {}, packageCache: {}, fullPaths: options.development // Requirement of watchify
+        cache: {},
+        packageCache: {},
+        fullPaths: options.development // Requirement of watchify
     }).transform(literalify.configure(bowerDependencies));
 
     // We set our dependencies as externals on our app bundler when developing
@@ -165,8 +168,8 @@ var cssTask = function (options) {
         gulp.watch(options.src, run);
     } else {
         gulp.src(options.src)
-            .pipe(concat('main.css'))
-            .pipe(cssmin())
+            .pipe(concat(options.bundleName || 'main.css'))
+            .pipe(minifyCSS())
             .pipe(gulp.dest(options.dest));
     }
 };
@@ -183,7 +186,9 @@ var htmlTask = function (options) {
 // chrome extension
 //clean build directory
 gulp.task('clean', function () {
-    return gulp.src('dist/*', {read: false})
+    return gulp.src('dist/*', {
+        read: false
+    })
         .pipe(clean());
 });
 
@@ -222,24 +227,13 @@ gulp.task('jshint', function () {
 });
 
 //copy vendor scripts and uglify all other scripts, creating source maps
-gulp.task('scripts', [], function () {
+gulp.task('scripts', ['jshint'], function () {
     return gulp.src('app/javascript/*.js')
         .pipe(gulp.dest('dist/javascript'));
-
-
-    //gulp.src('app/scripts/vendors/**/*.js')
-    //    .pipe(gulp.dest('dist/scripts/vendors'));
-    //return gulp.src(['app/scripts/**/*.js', '!app/scripts/vendors/**/*.js'])
-    //    .pipe(stripdebug())
-    //    .pipe(uglify({outSourceMap: true}))
-    //    .pipe(gulp.dest('dist/scripts'));
 });
 
 //minify styles
 gulp.task('styles', function () {
-// 	return gulp.src('app/styles/**/*.css')
-// 		.pipe(minifycss({root: 'app/styles', keepSpecialComments: 0}))
-// 		.pipe(gulp.dest('dist/styles'));
     return gulp.src('app/styles/**')
         .pipe(gulp.dest('dist/styles'));
 });
@@ -257,9 +251,11 @@ gulp.task('zip', ['html', 'scripts', 'styles', 'copy'], function () {
 //run all tasks after build directory has been cleaned
 gulp.task('default', ['clean'], function () {
 
+    var isDevelopment = true;
+
     // option.js
     browserifyTask({
-        development: true,
+        development: isDevelopment,
         src: './assets/javascript/option/option.js',
         dest: './app/javascript/',
         bundleName: 'optionBundle.js',
@@ -273,7 +269,7 @@ gulp.task('default', ['clean'], function () {
 
     // popup.js
     browserifyTask({
-        development: true,
+        development: isDevelopment,
         src: './assets/javascript/popup/popup.js',
         dest: './app/javascript/',
         bundleName: 'popupBundle.js',
@@ -285,7 +281,7 @@ gulp.task('default', ['clean'], function () {
 
     // background.js
     browserifyTask({
-        development: true,
+        development: isDevelopment,
         src: './assets/javascript/background.js',
         dest: './app/javascript/',
         bundleName: 'background.js'
@@ -293,7 +289,7 @@ gulp.task('default', ['clean'], function () {
 
     // option.html
     cssTask({
-        development: true,
+        development: isDevelopment,
         src: [
             './bower_components/semantic/dist/semantic.css',
             './assets/stylesheet/doc.css'
@@ -304,7 +300,7 @@ gulp.task('default', ['clean'], function () {
 
     // popup.html
     cssTask({
-        development: true,
+        development: isDevelopment,
         src: [
             './bower_components/semantic/dist/semantic.css',
             './assets/stylesheet/custom.css'
@@ -314,12 +310,7 @@ gulp.task('default', ['clean'], function () {
     });
 
     htmlTask({
+        development: isDevelopment,
         src: './app/**/*'
     });
-});
-
-gulp.task('x', function () {
-    return gulp.src(['assets/**/*'])
-        .pipe(zip('test.zip'))
-        .pipe(gulp.dest('package'));
 });
