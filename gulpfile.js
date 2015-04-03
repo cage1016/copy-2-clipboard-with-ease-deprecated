@@ -240,10 +240,10 @@ gulp.task('styles', function () {
 
 //build ditributable and sourcemaps after other tasks completed
 gulp.task('zip', ['html', 'scripts', 'styles', 'copy'], function () {
-    var manifest = require('./app/manifest'),
+    var manifest = require('./dist/manifest'),
         distFileName = manifest.name + ' v' + manifest.version + '.zip';
     console.log('distFileName= ' + distFileName);
-    return gulp.src(['dist/styles/*'])
+    return gulp.src(['dist/**/*'])
         .pipe(zip(distFileName))
         .pipe(gulp.dest('package'));
 });
@@ -251,7 +251,7 @@ gulp.task('zip', ['html', 'scripts', 'styles', 'copy'], function () {
 //run all tasks after build directory has been cleaned
 gulp.task('default', ['clean'], function () {
 
-    var isDevelopment = true;
+    var isDevelopment = false;
 
     // option.js
     browserifyTask({

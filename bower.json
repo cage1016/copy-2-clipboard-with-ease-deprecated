@@ -1,10 +1,9 @@
 {
   "name": "copy-2-clipboad-with-ease",
   "version": "0.0.0",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "angular": "~1.2.14",
-    "bootstrap-css-only": "~3.1.1",
+    "react": "~0.13.1",
+    "semantic": "~1.11.6"
   }
 }
