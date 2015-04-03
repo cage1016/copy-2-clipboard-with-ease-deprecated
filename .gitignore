@@ -6,6 +6,7 @@ dist
 .sass-cache
 bower_components
 app/javascript
+app/scripts
 app/styles
 test/bower_components
 package
