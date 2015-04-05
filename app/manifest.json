@@ -1,57 +1,55 @@
 {
-    "name": "copy 2 clipboard with ease",
-    "version": "1.0.0",
-    "manifest_version": 2,
-    "description": "s simple way to copy tab title and url with ease",
-    "icons": {
-        "16": "images/icon-16.png",
-        "128": "images/icon-128.png"
-    },
-    "default_locale": "en",
-    "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
-    "background": {
-        "scripts": [
-            "javascript/background.js"
-        ]
-    },
-    "browser_action": {
-        "default_icon": {
-            "19": "images/icon-19.png",
-            "38": "images/icon-38.png"
-        },
-        "default_title": "copy 2 clipboard with ease",
-        "default_popup": "popup.html"
-    },
-    "options_page": "options.html",
-    "content_scripts": [
-        {
-            "matches": [
-                "http://*/*",
-                "https://*/*"
-            ],
-            "js": [
-                "scripts/contentscript.js"
-            ],
-            "run_at": "document_end",
-            "all_frames": false
-        }
-    ],
-    "permissions": [
-        "tabs",
-        "contextMenus",
-        "http://*/*",
-        "https://*/*",
-        "storage"
-    ],
-    "commands": {
-        "trigger-fast-copy": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+C",
-                "mac": "MacCtrl+Shift+C",
-                "chromeos": "Ctrl+Shift+C",
-                "linux": "Ctrl+Shift+C"
-            },
-            "description": "fast copy"
-        }
-    }
+	"name": "copy 2 clipboard with ease",
+	"version": "1.0.1",
+	"manifest_version": 2,
+	"description": "a simple way to copy tab title and url with ease",
+	"icons": {
+		"16": "images/icon-16.png",
+		"128": "images/icon-128.png"
+	},
+	"default_locale": "en",
+	"content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
+	"background": {
+		"scripts": [
+			"javascript/background.js"
+		]
+	},
+	"browser_action": {
+		"default_icon": {
+			"19": "images/icon-19.png",
+			"38": "images/icon-38.png"
+		},
+		"default_title": "copy 2 clipboard with ease",
+		"default_popup": "popup.html"
+	},
+	"options_page": "options.html",
+	"content_scripts": [{
+		"matches": [
+			"http://*/*",
+			"https://*/*"
+		],
+		"js": [
+			"scripts/contentscript.js"
+		],
+		"run_at": "document_end",
+		"all_frames": false
+	}],
+	"permissions": [
+		"tabs",
+		"contextMenus",
+		"http://*/*",
+		"https://*/*",
+		"storage"
+	],
+	"commands": {
+		"trigger-fast-copy": {
+			"suggested_key": {
+				"default": "Ctrl+Shift+C",
+				"mac": "MacCtrl+Shift+C",
+				"chromeos": "Ctrl+Shift+C",
+				"linux": "Ctrl+Shift+C"
+			},
+			"description": "fast copy"
+		}
+	}
 }
