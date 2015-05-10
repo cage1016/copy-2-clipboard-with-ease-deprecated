@@ -23,17 +23,6 @@
 		"default_popup": "popup.html"
 	},
 	"options_page": "options.html",
-	"content_scripts": [{
-		"matches": [
-			"http://*/*",
-			"https://*/*"
-		],
-		"js": [
-			"scripts/contentscript.js"
-		],
-		"run_at": "document_end",
-		"all_frames": false
-	}],
 	"permissions": [
 		"tabs",
 		"contextMenus",
