@@ -28,6 +28,14 @@ Copy2clip.prototype.setShortcutEnabled = function (value) {
 Copy2clip.prototype.get = function (key) {
     var data;
 
+    /*
+     speical pattern handler.
+     localStorage[key] value type is string and should get with JSON.parse
+     */
+    if (key === 'pattern') {
+        return localStorage[key];
+    }
+
     if (!this.hasData(key)) {
         return false;
     }
