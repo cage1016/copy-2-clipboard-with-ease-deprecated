@@ -25,6 +25,7 @@ you quick launch `copy 2 clipboard with ease` one feature by custom keyboard sho
 
 ##Change log
 ============
+1.0.1 - pattern input problem and other bug fixed.
 
 1.0.0 - add options settings sync via Google account between different chrome browser. Change UI themes from Bootstrap to semantic-ui. minors bug fixed.
 
