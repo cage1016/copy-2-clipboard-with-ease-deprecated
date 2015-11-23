@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports.URL = 'https://www.googleapis.com/urlshortener/v1/url';
-module.exports.KEY = 'AIzaSyCWf9RZIACRWqEyfgjE7OY_c0o46D97WfA';
+module.exports.KEY = 'AIzaSyCqXff5QxMs6diqcP_pPnYiTPgE7xoa8Uc';
 module.exports.TIMER = null;
 module.exports.MILLISECONDS = 10000;
 module.exports.STATUSCOLOR = {
