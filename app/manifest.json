@@ -1,6 +1,6 @@
 {
 	"name": "copy 2 clipboard with ease",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"manifest_version": 2,
 	"description": "a simple way to copy tab title and url with ease",
 	"icons": {
