@@ -1,6 +1,6 @@
 {
 	"name": "copy 2 clipboard with ease",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"manifest_version": 2,
 	"description": "a simple way to copy tab title and url with ease",
 	"icons": {
@@ -24,10 +24,8 @@
 	},
 	"options_page": "options.html",
 	"permissions": [
-		"tabs",
+		"activeTab",
 		"contextMenus",
-		"http://*/*",
-		"https://*/*",
 		"storage"
 	],
 	"commands": {
